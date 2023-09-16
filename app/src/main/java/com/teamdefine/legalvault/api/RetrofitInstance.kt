@@ -1,6 +1,5 @@
 package com.teamdefine.legalvault.api
 
-
 import com.teamdefine.legalvault.BuildConfig
 import com.teamdefine.legalvault.auth.BasicAuthInterceptor
 import okhttp3.OkHttpClient
@@ -20,7 +19,7 @@ object RetrofitInstance {
             BuildConfig.API_KEY,
             ""
         )
-    ) //Sending username and password to Basic Auth Interceptor to generate the token
+    )
 
     //private instance
     private val retrofit by lazy {

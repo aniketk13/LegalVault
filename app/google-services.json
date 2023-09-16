@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "354930405737",
+    "project_id": "legal-v",
+    "storage_bucket": "legal-v.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354930405737:android:5a49a00ed0e117e6a00df8",
+        "android_client_info": {
+          "package_name": "com.teamdefine.legalvault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354930405737-e5g6js9fah8l0v44n1er7eteo6idh919.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamdefine.legalvault",
+            "certificate_hash": "ef7d457f066e49ffea353ab98851b7a20b9720af"
+          }
+        },
+        {
+          "client_id": "354930405737-d5qdb3i9mohdthoil3j51f06bk7ksca0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_eRSKVlOmDpPQKiWB3YKsVlH9iWgJTxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354930405737-d5qdb3i9mohdthoil3j51f06bk7ksca0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

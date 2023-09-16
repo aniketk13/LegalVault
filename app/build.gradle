@@ -4,8 +4,10 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
-    id("com.google.gms.google-services")
 }
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace 'com.teamdefine.legalvault'
@@ -27,6 +29,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField("String", "API_KEY", "\"" + localProperties['API_KEY'] + "\"")
         buildConfigField "String", "API_KEY", "\"${properties.getProperty("API_KEY")}\""
     }
 
