@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/loginMainBlock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/rootView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightest_blue_app"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/welcomeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/edit_text_height"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="@dimen/edit_text_height"
+                    android:paddingBottom="@dimen/marginn_from_top_bottom"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/appLogo"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:src="@drawable/appicon_legalvault" />
+
+                    <TextView
+                        android:id="@+id/welcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Welcome Back"
+                        android:textColor="@color/jetBlack"
+                        android:textSize="@dimen/font_medium_26sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/signInText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:alpha="0.52"
+                        android:text="Please log in to continue and get the best from our app"
+                        android:textColor="@color/jetBlack"
+                        android:textSize="@dimen/font_small_16sp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/loginCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_top_rounded_corner"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomeView">
+
+                    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
+                    <!--                        android:id="@+id/loginORSignup"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginBottom="30dp"-->
+                    <!--                        android:text="Login or Signup"-->
+                    <!--                        android:textColor="@color/jetBlack"-->
+                    <!--                        android:textSize="@dimen/font_normal_up_20sp"-->
+                    <!--                        android:textStyle="bold"-->
+                    <!--                        app:layout_constraintBottom_toTopOf="@+id/googleAuth"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="@id/googleAuth"-->
+                    <!--                        app:layout_constraintStart_toStartOf="@id/googleAuth" />-->
+
+
+                    <RelativeLayout
+                        android:id="@+id/googleAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/edittext_background"
+                        android:paddingStart="12dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <!-- Google Icon -->
+                        <ImageView
+                            android:id="@+id/google_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_login_google" />
+
+                        <!-- Text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@id/google_icon"
+                            android:text="Authenticate With Google"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/privacyCookiePolicyText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="By creating this account, you agree to our"
+                        android:textAlignment="center"
+                        android:textColor="@color/password_eye_color"
+                        android:textSize="@dimen/font_minimum_12sp"
+                        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                        app:layout_constraintStart_toStartOf="@+id/guideLineStart"
+                        app:layout_constraintTop_toBottomOf="@id/googleAuth"
+                        app:layout_constraintVertical_bias="1" />
+
+                    <TextView
+                        android:id="@+id/policyText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Privacy Policy and Cookie Policy"
+                        android:textAlignment="center"
+                        android:textColor="@color/darkblue_app"
+                        android:textSize="@dimen/font_minimum_12sp"
+                        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                        app:layout_constraintStart_toStartOf="@+id/guideLineStart"
+                        app:layout_constraintTop_toBottomOf="@id/privacyCookiePolicyText"
+                        app:layout_constraintVertical_bias="1" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guidelineEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="46dp" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideLineStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="46dp" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideLineBottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="26dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+</layout>
