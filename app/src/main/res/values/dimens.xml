@@ -86,7 +86,7 @@
     <dimen name="spacing_larger">56dp</dimen>
     <dimen name="spacing_medium_large">34dp</dimen>
 
-<!--    Size Dimension-->
+    <!--    Size Dimension-->
     <dimen name="size_too_small">14dp</dimen>
     <dimen name="size_extreme_small">16dp</dimen>
     <dimen name="size_very_small">18dp</dimen>
@@ -100,7 +100,6 @@
     <dimen name="size_large">100dp</dimen>
     <dimen name="size_very_large">120dp</dimen>
     <dimen name="size_very_large_250dp">250dp</dimen>
-
 
 
     <!-- Font size -->

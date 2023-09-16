@@ -2,4 +2,6 @@
     <string name="app_name">Legal Vault</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_client_id">354930405737-e5g6js9fah8l0v44n1er7eteo6idh919.apps.googleusercontent.com</string>
+
 </resources>

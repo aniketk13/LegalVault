@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.teamdefine.legalvault.main.base.LoadingModel
 
 fun Context.toast(message: String) {
     Toast.makeText(
@@ -19,4 +20,11 @@ fun Fragment.toast(msg: String) {
 
 fun View.showSnackBar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
+}
+
+fun View.setVisibilityBasedOnLoadingModel(loadingModel: LoadingModel) {
+    visibility = when (loadingModel) {
+        LoadingModel.LOADING -> View.VISIBLE
+        else -> View.GONE
+    }
 }
