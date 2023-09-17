@@ -41,7 +41,7 @@ class SplashFragment : Fragment() {
     //change this to home
     private fun navigateToHomeFragment() {
         Handler().postDelayed({
-            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
         }, 2000)
     }
 

@@ -1,6 +1,7 @@
 package com.teamdefine.legalvault.main.home
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+
     private val viewModel: HomeVM by viewModels()
     private lateinit var binding: FragmentHomeBinding
 
