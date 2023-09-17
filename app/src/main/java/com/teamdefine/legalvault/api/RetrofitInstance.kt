@@ -6,8 +6,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://api.hellosign.com/"
+private const val BASE_URL2 = "https://api.deepinfra.com/"
 
 object RetrofitInstance {
     //interceptors
@@ -33,5 +35,22 @@ object RetrofitInstance {
     //public instance
     val api: HelloSignAPI by lazy {
         retrofit.create(HelloSignAPI::class.java)
+    }
+
+}
+
+object RetrofitInstance2 {
+    var loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    var clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder().addInterceptor(
+        loggingInterceptor
+    ).connectTimeout(5, TimeUnit.MINUTES).callTimeout(5, TimeUnit.MINUTES)
+        .readTimeout(5, TimeUnit.MINUTES)
+    private val retrofit2 by lazy {
+        Retrofit.Builder().baseUrl(BASE_URL2).client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create()).build()
+    }
+
+    val gptApi: GptAPI by lazy {
+        retrofit2.create(GptAPI::class.java)
     }
 }
