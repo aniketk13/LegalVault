@@ -15,7 +15,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentLoginBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
@@ -34,7 +36,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = FragmentLoginBinding.inflate(layoutInflater, container, false).also {
         binding = it
-        firebaseInstance = FirebaseAuth.getInstance()
+        firebaseInstance = Firebase.auth
         firebaseDb = FirebaseFirestore.getInstance()
     }.root
 
@@ -58,6 +60,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveUserToDb(firebaseUserId: String, clientId: String) {
+        viewModel.updateLoadingModel(LoadingModel.LOADING)
         val user: MutableMap<String, Any> = HashMap()
         user["clientId"] = clientId
         firebaseDb.collection("Users").document(firebaseUserId).set(user).addOnSuccessListener {
@@ -72,7 +75,7 @@ class LoginFragment : Fragment() {
 
     private fun initGoogleAuth() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.google_client_id))
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
@@ -92,6 +95,7 @@ class LoginFragment : Fragment() {
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            Timber.i("CODES: ${result.resultCode.toString()}, ${Activity.RESULT_OK.toString()}")
             if (result.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 firebaseInstance.fetchSignInMethodsForEmail(task.result.email.toString())
@@ -106,6 +110,8 @@ class LoginFragment : Fragment() {
                             viewModel.updateLoadingModel(LoadingModel.ERROR)
                             binding.root.showSnackBar("oops!")
                         }
+                    }.addOnFailureListener {
+                        Timber.e(it.message.toString())
                     }
             } else {
                 binding.root.showSnackBar("Internal authentication error")

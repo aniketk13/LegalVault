@@ -8,10 +8,23 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+def debugKeystorePropertiesFile = rootProject.file("env/legalvault.properties");
+def debugKeystoreProperties = new Properties()
+debugKeystoreProperties.load(new FileInputStream(debugKeystorePropertiesFile))
+
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file("$rootDir\\env\\legalvaultsigns.jks")
+            storePassword debugKeystoreProperties['storePassword']
+            keyAlias debugKeystoreProperties['keyAlias']
+            keyPassword debugKeystoreProperties['keyPassword']
+        }
+    }
+
     namespace 'com.teamdefine.legalvault'
     compileSdk 33
 

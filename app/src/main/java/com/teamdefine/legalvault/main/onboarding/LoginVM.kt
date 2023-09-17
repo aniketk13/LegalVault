@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.teamdefine.legalvault.api.RetrofitInstance
 import com.teamdefine.legalvault.main.base.BaseViewModel
+import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.onboarding.model.ApiAppRequestModel
 import com.teamdefine.legalvault.main.onboarding.model.ApiAppResponseModel
 import kotlinx.coroutines.launch
@@ -22,11 +23,14 @@ class LoginVM : BaseViewModel() {
                 val response = RetrofitInstance.api.createApp(body)
                 if (response.isSuccessful) {
                     _appResponse.postValue(response.body())
+                    updateLoadingModel(LoadingModel.COMPLETED)
                 } else {
+                    updateLoadingModel(LoadingModel.ERROR)
                     Timber.e(response.message().toString())
                 }
             }
         } catch (e: Exception) {
+            updateLoadingModel(LoadingModel.ERROR)
             Timber.e(e.message.toString())
         }
     }

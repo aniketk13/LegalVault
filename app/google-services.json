@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "354930405737-e5g6js9fah8l0v44n1er7eteo6idh919.apps.googleusercontent.com",
+          "client_id": "354930405737-l1pprs0de5fbe7k6p7r8qul5rn932vb0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.teamdefine.legalvault",
-            "certificate_hash": "ef7d457f066e49ffea353ab98851b7a20b9720af"
+            "certificate_hash": "688a37fa285f55398f2a950a99f7163f1e89ad06"
           }
         },
         {
