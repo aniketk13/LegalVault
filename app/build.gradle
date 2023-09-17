@@ -115,4 +115,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
+
+    //text to pdf
+    implementation 'com.itextpdf:itext7-core:7.1.15'
 }
