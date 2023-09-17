@@ -15,12 +15,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentLoginBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
+import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
@@ -36,7 +35,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = FragmentLoginBinding.inflate(layoutInflater, container, false).also {
         binding = it
-        firebaseInstance = Firebase.auth
+        firebaseInstance = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance()
     }.root
 
@@ -57,6 +56,12 @@ class LoginFragment : Fragment() {
         viewModel.loadingModel.observe(viewLifecycleOwner) {
             binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         }
+        viewModel.clientError.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                binding.root.showSnackBar("Going home")
+                navigateToHomeScreen()
+            }
+        })
     }
 
     private fun saveUserToDb(firebaseUserId: String, clientId: String) {
@@ -101,11 +106,12 @@ class LoginFragment : Fragment() {
                 firebaseInstance.fetchSignInMethodsForEmail(task.result.email.toString())
                     .addOnCompleteListener { work ->
                         if (work.isSuccessful) {
-                            val result = work.result?.signInMethods
-                            if (result.isNullOrEmpty())
-                                userRegistration(isRegistered = false, task)
+                            val signInResults = work.result?.signInMethods
+                            Timber.e(work.result.signInMethods.toString())
+                            if (signInResults.isNullOrEmpty())
+                                userRegistration(saveUserToDb = true, task)
                             else
-                                userRegistration(isRegistered = true, task)
+                                userRegistration(saveUserToDb = false, task)
                         } else {
                             viewModel.updateLoadingModel(LoadingModel.ERROR)
                             binding.root.showSnackBar("oops!")
@@ -119,11 +125,11 @@ class LoginFragment : Fragment() {
             }
         }
 
-    private fun userRegistration(isRegistered: Boolean, task: Task<GoogleSignInAccount>) {
+    private fun userRegistration(saveUserToDb: Boolean, task: Task<GoogleSignInAccount>) {
         if (task.isSuccessful) {
             val account: GoogleSignInAccount? = task.result
             account?.let {
-                updateUI(it, isRegistered)
+                updateUI(it, saveUserToDb)
             }
         } else {
             viewModel.updateLoadingModel(LoadingModel.ERROR)
@@ -131,19 +137,19 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun updateUI(account: GoogleSignInAccount, isRegistered: Boolean) {
+    private fun updateUI(account: GoogleSignInAccount, saveUserToDb: Boolean) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseInstance.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                if (isRegistered) {
+                if (saveUserToDb) {
+                    createDropBoxSignApp()
+                } else {
                     viewModel.updateLoadingModel(LoadingModel.COMPLETED)
                     navigateToHomeScreen()
-                } else {
-                    createDropBoxSignApp()
                 }
             } else {
                 viewModel.updateLoadingModel(LoadingModel.ERROR)
-                binding.root.showSnackBar("Some error occurred")
+                binding.root.showSnackBar("Sign in failure. Please try after sometime.")
             }
         }
     }
