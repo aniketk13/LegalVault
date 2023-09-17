@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.teamdefine.legalvault.R
+import com.teamdefine.legalvault.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
-    private val firebaseInstance = FirebaseAuth.getInstance()
+    private lateinit var firebaseInstance: FirebaseAuth
+    private lateinit var binding: FragmentSplashBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
-    }
+    ): View? = FragmentSplashBinding.inflate(layoutInflater, container, false).also {
+        binding = it
+        firebaseInstance = FirebaseAuth.getInstance()
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

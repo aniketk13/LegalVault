@@ -26,14 +26,16 @@ import timber.log.Timber
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
-    private val firebaseInstance = FirebaseAuth.getInstance()
-    private val firebaseDb = FirebaseFirestore.getInstance()
+    private lateinit var firebaseInstance: FirebaseAuth
+    private lateinit var firebaseDb: FirebaseFirestore
     private val viewModel: LoginVM by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = FragmentLoginBinding.inflate(layoutInflater, container, false).also {
         binding = it
+        firebaseInstance = FirebaseAuth.getInstance()
+        firebaseDb = FirebaseFirestore.getInstance()
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

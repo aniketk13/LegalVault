@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
-
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.teamdefine.legalvault.main.splash.SplashFragment"

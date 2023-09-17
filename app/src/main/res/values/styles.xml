@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">@color/lightblue_app</item>
         <item name="colorAccent">@color/lightblue_app</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:statusBarColor">@color/darkblue_app</item>
         <!--  For Custom Action Mode Background Color/Drawable -->
         <item name="actionModeBackground">@color/action_mode_tab</item>
     </style>
