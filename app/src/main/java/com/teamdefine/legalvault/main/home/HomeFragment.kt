@@ -31,11 +31,16 @@ class HomeFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.gptResponse.observe(viewLifecycleOwner) { gptResponse ->
-            Timber.tag("helloabc").i(gptResponse.toString())
+            Timber.i(gptResponse.toString())
+            navigateToEditDocument()
         }
         viewModel.loadingModel.observe(viewLifecycleOwner) {
             binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         }
+    }
+
+    private fun navigateToEditDocument() {
+
     }
 
     private fun initClickListeners() {
