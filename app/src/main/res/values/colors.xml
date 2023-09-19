@@ -41,7 +41,7 @@
     <color name="primary10">#d5e8da</color>
     <color name="primary05">#f6fef8</color>
     <color name="primary06">#F2FAFF</color>
-    <color name="gfgSecondary">#0f2b3c</color>
+    <color name="legSecondary">#0f2b3c</color>
     <color name="gfgHeading">#020202</color>
     <color name="secondary10">#f2faff</color>
     <color name="articleTitle">#40424E</color>
@@ -50,7 +50,7 @@
     <color name="tagsDesignBorder">#ddddde</color>
     <color name="mainBackgroundAndBlockBackground">#f0f3f5</color>
     <color name="gfgColorAccent">#FF6464</color>
-    <color name="gfgWhite">#ffffff</color>
+    <color name="legWhite">#ffffff</color>
     <!--    <color name="gfgHomeBlue">#F2FAFF</color>-->
     <color name="gfgHeaderLightGrey">#F8F8F9</color>
     <color name="gfgLightBorder">#C7C7C8</color>
