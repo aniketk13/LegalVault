@@ -1,13 +1,10 @@
-package com.teamdefine.legalvault.main
+package com.teamdefine.legalvault.main.review
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.teamdefine.legalvault.R
-import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
 
 class ReviewAgreement : Fragment() {

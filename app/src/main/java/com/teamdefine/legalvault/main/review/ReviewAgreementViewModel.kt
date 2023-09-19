@@ -1,4 +1,4 @@
-package com.teamdefine.legalvault.main
+package com.teamdefine.legalvault.main.review
 
 import androidx.lifecycle.ViewModel
 
