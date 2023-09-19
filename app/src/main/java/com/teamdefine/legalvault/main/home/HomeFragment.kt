@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
+import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import timber.log.Timber
 
 class HomeFragment : Fragment() {
@@ -31,6 +32,9 @@ class HomeFragment : Fragment() {
     private fun initObservers() {
         viewModel.gptResponse.observe(viewLifecycleOwner) { gptResponse ->
             Timber.tag("helloabc").i(gptResponse.toString())
+        }
+        viewModel.loadingModel.observe(viewLifecycleOwner) {
+            binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         }
     }
 

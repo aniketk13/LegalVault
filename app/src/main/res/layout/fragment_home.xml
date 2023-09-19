@@ -60,4 +60,10 @@
         app:backgroundTint="#1F2839"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/loadingModel"
+        layout="@layout/common_loading_model"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
