@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/reviewAgreement">
+    app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.teamdefine.legalvault.main.splash.SplashFragment"
@@ -29,10 +29,18 @@
         android:id="@+id/homeFragment"
         android:name="com.teamdefine.legalvault.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_reviewAgreement"
+            app:destination="@id/reviewAgreement" />
+    </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
         android:name="com.teamdefine.legalvault.main.review.ReviewAgreement"
         android:label="ReviewAgreement"
-        tools:layout="@layout/fragment_review_agreement" />
+        tools:layout="@layout/fragment_review_agreement">
+        <argument
+            android:name="generatedText"
+            app:argType="string" />
+    </fragment>
 </navigation>

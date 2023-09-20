@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
@@ -31,16 +32,21 @@ class HomeFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.gptResponse.observe(viewLifecycleOwner) { gptResponse ->
-            Timber.i(gptResponse.toString())
-            navigateToEditDocument()
+            Timber.i(gptResponse.results[0].generated_text)
+            val generatedText = gptResponse.results[0].generated_text
+            navigateToEditDocument(generatedText)
         }
         viewModel.loadingModel.observe(viewLifecycleOwner) {
             binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         }
     }
 
-    private fun navigateToEditDocument() {
-
+    private fun navigateToEditDocument(generatedText: String) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToReviewAgreement(
+                generatedText
+            )
+        )
     }
 
     private fun initClickListeners() {
