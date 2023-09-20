@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
+import kotlin.math.sign
 
 class ReviewAgreement : Fragment() {
     private lateinit var viewModel: ReviewAgreementViewModel
     private lateinit var binding: FragmentReviewAgreementBinding
     private val args: ReviewAgreementArgs by navArgs()
+    private var signerCount=0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,5 +26,20 @@ class ReviewAgreement : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.documentEditText.setText(args.generatedText)
+        initClickListeners()
+    }
+
+    private fun initClickListeners() {
+        binding.addSignerButton.setOnClickListener{
+            if(signerCount<5){
+                signerCount++
+                val cardView=LayoutInflater.from(requireContext()).inflate(R.layout.signer_container,null)
+                binding.container.addView(cardView)
+            }
+
+        }
+        binding.compileContractButton.setOnClickListener{
+
+        }
     }
 }
