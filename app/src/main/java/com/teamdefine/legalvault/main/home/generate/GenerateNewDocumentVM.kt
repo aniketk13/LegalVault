@@ -1,4 +1,4 @@
-package com.teamdefine.legalvault.main.home
+package com.teamdefine.legalvault.main.home.generate
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,21 +8,23 @@ import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.model.GptRequestModel
 import com.teamdefine.legalvault.main.home.model.GptResponseModel
+import com.teamdefine.legalvault.main.utility.event.Event
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class HomeVM : BaseViewModel() {
-    private val _gptResponse: MutableLiveData<GptResponseModel> = MutableLiveData()
-    val gptResponse: LiveData<GptResponseModel>
+class GenerateNewDocumentVM : BaseViewModel() {
+    private val _gptResponse: MutableLiveData<Event<GptResponseModel>> = MutableLiveData()
+    val gptResponse: LiveData<Event<GptResponseModel>>
         get() = _gptResponse
 
     fun generateAgreement(prompt: String) {
         val body = GptRequestModel(prompt)
         try {
+            updateLoadingModel(LoadingModel.LOADING)
             viewModelScope.launch {
                 val response = RetrofitInstance2.gptApi.getAgreement(body)
                 if (response.isSuccessful) {
-                    _gptResponse.postValue(response.body())
+                    _gptResponse.postValue(Event(response.body()!!))
                     updateLoadingModel(LoadingModel.COMPLETED)
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)

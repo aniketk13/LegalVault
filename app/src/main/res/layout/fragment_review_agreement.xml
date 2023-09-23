@@ -48,37 +48,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/documentEditText">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addSignerButton"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:text="Add Signer" />
+                android:layout_gravity="center"
+                android:background="@drawable/button_bg_primary"
+                android:text="Add Signer"
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
-        <Button
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/compileContractButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Compile Contract.."
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_bg_primary"
+            android:paddingHorizontal="10dp"
+            android:text="Compile Contract"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        <!--        <TextView-->
-        <!--            android:id="@+id/addSignersButton"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="@dimen/spacing_minimum_5dp"-->
-        <!--            android:layout_marginEnd="@dimen/dimen_10dp"-->
-        <!--            android:layout_marginBottom="15dp"-->
-        <!--            android:background="@drawable/add_signers_outer"-->
-        <!--            android:drawablePadding="@dimen/spacing_very_small_8dp"-->
-        <!--            android:gravity="center"-->
-        <!--            android:paddingHorizontal="15dp"-->
-        <!--            android:paddingVertical="12dp"-->
-        <!--            android:text="Confirm and add signers"-->
-        <!--            android:textColor="@color/white"-->
-        <!--            android:textSize="15sp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent" />-->
 
         <include
             android:id="@+id/loadingModel"

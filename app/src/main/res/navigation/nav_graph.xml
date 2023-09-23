@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/reviewAgreement">
+    app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.teamdefine.legalvault.main.splash.SplashFragment"
@@ -41,6 +41,9 @@
         tools:layout="@layout/fragment_review_agreement">
         <argument
             android:name="generatedText"
+            app:argType="string" />
+        <argument
+            android:name="documentName"
             app:argType="string" />
     </fragment>
 </navigation>

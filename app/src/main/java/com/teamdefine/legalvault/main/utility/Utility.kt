@@ -71,4 +71,8 @@ object Utility {
                 "\n" +
                 "And so, the world turned, with each moment creating a tapestry of stories, emotions, and experiences. In the grand scheme of things, every individual was but a tiny speck in the vast cosmos, yet their lives were filled with meaning, purpose, and the possibility of endless discovery.\""
     }
+
+    fun appendCustomDocGenerationPropmt(userPrompt: String): String {
+        return "Generate a document in legal and formal wording and the document should contain all the details mentioned. $userPrompt. Add proper dates and names in the document. Also, make it to the point, but in a formal way."
+    }
 }

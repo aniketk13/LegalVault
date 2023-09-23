@@ -6,60 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".main.home.HomeFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/banner_card"
+    <LinearLayout
+        android:id="@+id/topLl"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginTop="2.5dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/appicon_legalvault" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Legal Vault"
+            android:textColor="@color/darkblue_app"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topLl">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/fragmentTopicsTabs"
+            style="@style/MyTabAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/home_banner" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabMode="fixed" />
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/promptLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/banner_card"
-        app:startIconDrawable="@drawable/document">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/promptTextInput"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/fragmentViewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Briefly detail your argument" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentTopicsTabs" />
 
-    <TextView
-        android:id="@+id/audio_coming_soon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Audio Prompts coming soon...."
-        app:layout_constraintStart_toStartOf="@id/promptLayout"
-        app:layout_constraintTop_toBottomOf="@id/promptLayout" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableEnd="@drawable/right_arrow"
-        android:drawableTint="@color/white"
-        android:text="Prepare my Agreement"
-        app:backgroundTint="#1F2839"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <include
         android:id="@+id/loadingModel"
