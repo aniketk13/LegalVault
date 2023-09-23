@@ -42,12 +42,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        buildConfigField("String", "API_KEY", "\"" + localProperties['API_KEY'] + "\"")
-        buildConfigField "String", "API_KEY", "\"${properties.getProperty("API_KEY")}\""
+//        Properties properties = new Properties()
+//        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField("String", "DROPBOX_SIGN_API_KEY", "\"" + localProperties['DROPBOX_SIGN_API_KEY'] + "\"")
         buildConfigField("String", "GPT_API_KEY", "\"" + localProperties['GPT_API_KEY'] + "\"")
-        buildConfigField "String", "API_KEY", "\"${properties.getProperty("GPT_API_KEY")}\""
+//        buildConfigField "String", "API_KEY", "\"${properties.getProperty("GPT_API_KEY")}\""
     }
 
     buildTypes {
@@ -120,4 +119,7 @@ dependencies {
 
     //text to pdf
     implementation 'com.itextpdf:itext7-core:7.1.15'
+
+    //koin
+    implementation("io.insert-koin:koin-android:$koin_version")
 }

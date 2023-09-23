@@ -8,11 +8,38 @@ import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
-
 object Utility {
+    suspend fun createPdfFromTextAsync(
+        context: Context,
+        text: String,
+        fileName: String,
+        view: View
+    ): String? {
+        return withContext(Dispatchers.IO) {
+            val outputDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            if (outputDir != null) {
+                val pdfFile = File(outputDir, "$fileName.pdf")
+                val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfFile)))
+
+                Document(pdfDocument).use { document ->
+                    document.add(Paragraph(text))
+                }
+
+                pdfFile.absolutePath
+            } else {
+                withContext(Dispatchers.Main) {
+                    view.showSnackBar("Permission denied")
+                }
+                null
+            }
+        }
+    }
+
     fun createPdfFromText(context: Context, text: String, fileName: String, view: View): String? {
         val outputDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         return if (outputDir != null) {
@@ -29,6 +56,7 @@ object Utility {
             null
         }
     }
+
 
     fun getRandomText(): String {
         return "Certainly! Here's a randomly generated text of approximately 200 words:\n" +

@@ -5,17 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.installations.FirebaseInstallations
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
+import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signer
+import com.teamdefine.legalvault.main.review.model.Signers
 import timber.log.Timber
+import java.io.File
 
 class ReviewAgreement : Fragment() {
-    private lateinit var viewModel: ReviewAgreementViewModel
+    private val viewModel: ReviewAgreementViewModel by viewModels()
     private lateinit var binding: FragmentReviewAgreementBinding
-    private val args: ReviewAgreementArgs by navArgs()
+    private lateinit var firebaseInstance: FirebaseAuth
+    var listOfSigner: List<Signers> = listOf()
+
+//    private val args: ReviewAgreementArgs by navArgs()
     private var signerCount = 0
 
     override fun onCreateView(
@@ -23,35 +34,52 @@ class ReviewAgreement : Fragment() {
         savedInstanceState: Bundle?
     ): View? = FragmentReviewAgreementBinding.inflate(layoutInflater, container, false).also {
         binding = it
+        firebaseInstance = FirebaseAuth.getInstance()
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.documentEditText.setText(args.generatedText)
-        initClickListeners()
+//        binding.documentEditText.setText(args.generatedText)
+//        initClickListeners()
+//        initObservers()
+        viewModel.sendDocForSignatures(EmbeddedSignRequestModel())
+
+    }
+
+    private fun initObservers() {
+        viewModel.filePath.observe(viewLifecycleOwner, Observer {filePath ->
+            Timber.e(filePath.toString())
+            filePath?.let {
+                viewModel.savePdfToStorage(it, "TestFile1", firebaseInstance.currentUser!!)
+            }
+        })
+        viewModel.savedFileUrl.observe(viewLifecycleOwner, Observer {publicUrl ->
+            viewModel.sendDocForSignatures(EmbeddedSignRequestModel())
+        })
     }
 
     private fun initClickListeners() {
         binding.addSignerButton.setOnClickListener {
             if (signerCount < 5) {
                 signerCount++
-                val cardView =
-                    LayoutInflater.from(requireContext()).inflate(R.layout.signer_container, null)
+                val cardView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.signer_container, null)
                 binding.container.addView(cardView)
             }
-
         }
+
         binding.compileContractButton.setOnClickListener {
-            var signers: ArrayList<Signer> = arrayListOf()
-            for (i in 1 until binding.container.childCount) {
-                val signer = binding.container.getChildAt(i)
+            listOfSigner = (1 until binding.container.childCount).map { index ->
+                val signer = binding.container.getChildAt(index)
                 val role = signer.findViewById<EditText>(R.id.inputRole)?.text.toString()
                 val name = signer.findViewById<EditText>(R.id.inputName)?.text.toString()
                 val email = signer.findViewById<EditText>(R.id.inputEmail)?.text.toString()
-                val signerData = Signer(role, name, email)
-                signers.add(signerData)
+                Signers(role, name, email)
             }
-            Timber.i(signers.toString())
+
+            Timber.i(listOfSigner.toString())
+//            viewModel.generatePdf(requireContext(), args.generatedText, "TestFile", binding.root)
         }
     }
+
 }

@@ -18,7 +18,7 @@ object RetrofitInstance {
         loggingInterceptor
     ).addInterceptor(
         BasicAuthInterceptor(
-            BuildConfig.API_KEY,
+            BuildConfig.DROPBOX_SIGN_API_KEY,
             ""
         )
     )
