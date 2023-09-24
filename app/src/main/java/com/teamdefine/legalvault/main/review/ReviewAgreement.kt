@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
@@ -28,7 +29,9 @@ class ReviewAgreement : Fragment() {
     private val viewModel: ReviewAgreementViewModel by viewModels()
     private lateinit var binding: FragmentReviewAgreementBinding
     private lateinit var firebaseInstance: FirebaseAuth
+    private lateinit var firestoreInstance: FirebaseFirestore
     var listOfSigner: List<Signers> = listOf()
+    var publicURL: String = ""
     private val args: ReviewAgreementArgs by navArgs()
     private var signerCount = 0
     private lateinit var progressDialog: ProgressDialog
@@ -39,6 +42,7 @@ class ReviewAgreement : Fragment() {
     ): View? = FragmentReviewAgreementBinding.inflate(layoutInflater, container, false).also {
         binding = it
         firebaseInstance = FirebaseAuth.getInstance()
+        firestoreInstance = FirebaseFirestore.getInstance()
         progressDialog = ProgressDialog(requireContext())
     }.root
 
@@ -67,17 +71,9 @@ class ReviewAgreement : Fragment() {
                 )
             }
         })
-        viewModel.publicSavedFileUrl.observe(viewLifecycleOwner, Observer { publicUrl ->
-            viewModel.sendDocForSignatures(
-                EmbeddedSignRequestModel(
-                    clientId = MY_CLIENT_ID,
-                    documentTitle = args.documentName,
-                    documentSubject = "${args.documentName}-Subject",
-                    documentMessage = "${args.documentName}-Message",
-                    documentSigners = listOfSigner as ArrayList<Signers>,
-                    arrayListOf(publicUrl)
-                )
-            )
+        viewModel.publicSavedFileUrl.observe(viewLifecycleOwner, Observer { publicUrlFromDB ->
+            publicURL = publicUrlFromDB
+            viewModel.getDataFromFirestore()
         })
         viewModel.loadingModel.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -87,6 +83,18 @@ class ReviewAgreement : Fragment() {
         })
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
             findNavController().popBackStack()
+        })
+        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
+            viewModel.sendDocForSignatures(
+                EmbeddedSignRequestModel(
+                    clientId = it.getValue("clientId") as String,
+                    documentTitle = args.documentName,
+                    documentSubject = "${args.documentName}-Subject",
+                    documentMessage = "${args.documentName}-Message",
+                    documentSigners = listOfSigner as ArrayList<Signers>,
+                    arrayListOf(publicURL)
+                )
+            )
         })
     }
 
