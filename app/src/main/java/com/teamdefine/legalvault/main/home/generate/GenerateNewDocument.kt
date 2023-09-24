@@ -16,6 +16,7 @@ import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentGenerateNewDocumentBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
+import com.teamdefine.legalvault.main.utility.Utility.showProgressDialog
 import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
@@ -39,6 +40,11 @@ class GenerateNewDocument : Fragment() {
         initObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.promptTextInput.setText("")
+    }
+
     private fun initClickListeners() {
         binding.prepareDocBtn.setOnClickListener {
             if (binding.promptTextInput.text.toString().isNullOrEmpty())
@@ -58,7 +64,7 @@ class GenerateNewDocument : Fragment() {
         })
         viewModel.loadingModel.observe(viewLifecycleOwner, Observer { loadingState ->
             when (loadingState) {
-                LoadingModel.LOADING -> showProgressDialog("Preparing your agreement, this may take a few minutes..")
+                LoadingModel.LOADING -> progressDialog.showProgressDialog("Preparing your agreement, this may take a few minutes..")
                 else -> if (progressDialog.isShowing) progressDialog.dismiss()
             }
         })
@@ -70,6 +76,7 @@ class GenerateNewDocument : Fragment() {
         val dialogBuilder =
             AlertDialog.Builder(activity).setView(reasonDialogView).setTitle("Name Your Document")
         val alertDialog = dialogBuilder.show()
+        alertDialog.setCancelable(false)
 
         val confirmButton = reasonDialogView.findViewById<Button>(R.id.prepareDocBtn)
         confirmButton.setOnClickListener {
@@ -89,11 +96,5 @@ class GenerateNewDocument : Fragment() {
         findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToReviewAgreement(generatedText, documentName)
         )
-    }
-
-    private fun showProgressDialog(message: String) {
-        progressDialog.setMessage(message)
-        progressDialog.setCancelable(false)
-        progressDialog.show()
     }
 }

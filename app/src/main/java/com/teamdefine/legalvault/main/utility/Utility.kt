@@ -1,5 +1,6 @@
 package com.teamdefine.legalvault.main.utility
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Environment
 import android.view.View
@@ -74,5 +75,11 @@ object Utility {
 
     fun appendCustomDocGenerationPropmt(userPrompt: String): String {
         return "Generate a document in legal and formal wording and the document should contain all the details mentioned. $userPrompt. Add proper dates and names in the document. Also, make it to the point, but in a formal way."
+    }
+
+    fun ProgressDialog.showProgressDialog(message: String = "") {
+        this.setMessage(message)
+        this.setCancelable(false)
+        this.show()
     }
 }

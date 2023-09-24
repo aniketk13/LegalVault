@@ -1,5 +1,6 @@
 package com.teamdefine.legalvault.main.review
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,11 @@ import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
+import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signers
+import com.teamdefine.legalvault.main.utility.Utility.showProgressDialog
 import com.teamdefine.legalvault.main.utility.event.EventObserver
-import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
 
@@ -29,6 +31,7 @@ class ReviewAgreement : Fragment() {
     var listOfSigner: List<Signers> = listOf()
     private val args: ReviewAgreementArgs by navArgs()
     private var signerCount = 0
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +39,21 @@ class ReviewAgreement : Fragment() {
     ): View? = FragmentReviewAgreementBinding.inflate(layoutInflater, container, false).also {
         binding = it
         firebaseInstance = FirebaseAuth.getInstance()
+        progressDialog = ProgressDialog(requireContext())
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.documentEditText.setText(args.generatedText)
+        initViews()
         initClickListeners()
         initObservers()
+    }
+
+    private fun initViews() {
+        binding.topToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initObservers() {
@@ -69,7 +80,10 @@ class ReviewAgreement : Fragment() {
             )
         })
         viewModel.loadingModel.observe(viewLifecycleOwner, Observer {
-            binding.root.setVisibilityBasedOnLoadingModel(it)
+            when (it) {
+                LoadingModel.LOADING -> progressDialog.showProgressDialog("Finalizing your agreement")
+                else -> if (progressDialog.isShowing) progressDialog.dismiss()
+            }
         })
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
             findNavController().popBackStack()
@@ -78,7 +92,7 @@ class ReviewAgreement : Fragment() {
 
     private fun initClickListeners() {
         binding.addSignerButton.setOnClickListener {
-            if (signerCount < 3) {
+            if (signerCount < 2) {
                 signerCount++
                 val cardView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.signer_container, null)
@@ -104,5 +118,4 @@ class ReviewAgreement : Fragment() {
             )
         }
     }
-
 }
