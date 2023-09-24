@@ -16,7 +16,6 @@ import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentGenerateNewDocumentBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
-import com.teamdefine.legalvault.main.utility.Utility
 import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
@@ -44,8 +43,10 @@ class GenerateNewDocument : Fragment() {
         binding.prepareDocBtn.setOnClickListener {
             if (binding.promptTextInput.text.toString().isNullOrEmpty())
                 binding.root.showSnackBar("Describe your article")
-            else
-                generateAgreement(Utility.appendCustomDocGenerationPropmt(binding.promptTextInput.text.toString()))
+            else {
+                generateAgreement("create one funny joke in one line")
+//                generateAgreement(Utility.appendCustomDocGenerationPropmt(binding.promptTextInput.text.toString()))
+            }
         }
     }
 

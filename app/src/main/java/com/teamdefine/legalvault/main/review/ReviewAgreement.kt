@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.teamdefine.legalvault.R
@@ -16,6 +17,7 @@ import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signers
 import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
+import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
 
 const val MY_CLIENT_ID = "d0b0258b7a737cda807b5b996f31a765"
@@ -39,27 +41,26 @@ class ReviewAgreement : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.documentEditText.setText(args.generatedText)
-        initViews()
         initClickListeners()
         initObservers()
-    }
-
-    private fun initViews() {
-        binding.topToolbar.title = "Review Agreement (${args.documentName})"
     }
 
     private fun initObservers() {
         viewModel.localFilePath.observe(viewLifecycleOwner, Observer { filePath ->
             Timber.e(filePath.toString())
             filePath?.let {
-                viewModel.savePdfToStorage(it, args.documentName, firebaseInstance.currentUser!!)
+                viewModel.savePdfToStorage(
+                    it,
+                    args.documentName.replace("\\s".toRegex(), ""),
+                    firebaseInstance.currentUser!!
+                )
             }
         })
         viewModel.publicSavedFileUrl.observe(viewLifecycleOwner, Observer { publicUrl ->
             viewModel.sendDocForSignatures(
                 EmbeddedSignRequestModel(
                     clientId = MY_CLIENT_ID,
-                    documentTitle = "${args.documentName}-Title",
+                    documentTitle = args.documentName,
                     documentSubject = "${args.documentName}-Subject",
                     documentMessage = "${args.documentName}-Message",
                     documentSigners = listOfSigner as ArrayList<Signers>,
@@ -71,17 +72,19 @@ class ReviewAgreement : Fragment() {
             binding.root.setVisibilityBasedOnLoadingModel(it)
         })
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
-            //to do: navigate to 2nd fragment of viewpager to view the request
+            findNavController().popBackStack()
         })
     }
 
     private fun initClickListeners() {
         binding.addSignerButton.setOnClickListener {
-            if (signerCount < 5) {
+            if (signerCount < 3) {
                 signerCount++
                 val cardView = LayoutInflater.from(requireContext())
                     .inflate(R.layout.signer_container, null)
                 binding.container.addView(cardView)
+            } else {
+                binding.root.showSnackBar("Max signers limit reached")
             }
         }
 
