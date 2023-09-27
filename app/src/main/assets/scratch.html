@@ -21,12 +21,18 @@
 
         console.log("test");
         client.open(
-          "https://app.hellosign.com/editor/embeddedSign?signature_id=f4ad16bb6d6035b481484bc129eb5b41&token=40b91929dae1b301a0d012dd85791ce8",
+          "https://app.hellosign.com/editor/embeddedSign?signature_id=f4ad16bb6d6035b481484bc129eb5b41&token=e3a1bb8348e38ff30d0a099c8bb3aee2",
           {
             skipDomainVerification: true,
             testMode: true,
           }
         );
+        window.opener.postMessage(
+      {
+        status: 'success'
+      },
+      '*'
+    );
       </script>
 </body>
 </html>
