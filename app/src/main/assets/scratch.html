@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloSign Example</title>
+    <!-- Include the HelloSign library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hellosign-embedded"></script>
+</head>
+<body>
+<h1>HelloSign Example</h1>
+
+<!-- Include your JavaScript code within a script tag -->
+<script type="module">
+        import HelloSign from 'https://cdn.jsdelivr.net/npm/hellosign-embedded@2.11.1/+esm';
+
+        const client = new HelloSign({
+          clientId: "d0b0258b7a737cda807b5b996f31a765",
+        });
+
+        console.log("test");
+        client.open(
+          "https://app.hellosign.com/editor/embeddedSign?signature_id=f4ad16bb6d6035b481484bc129eb5b41&token=40b91929dae1b301a0d012dd85791ce8",
+          {
+            skipDomainVerification: true,
+            testMode: true,
+          }
+        );
+      </script>
+</body>
+</html>
+</html>
