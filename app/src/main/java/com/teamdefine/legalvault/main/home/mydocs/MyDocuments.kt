@@ -16,6 +16,7 @@ import com.teamdefine.legalvault.databinding.FragmentMyDocumentsBinding
 import com.teamdefine.legalvault.main.home.mydocs.adapter.MyDocsAdapter
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.CONSTANTS
+import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import timber.log.Timber
 import java.util.concurrent.Executor
 
@@ -92,9 +93,15 @@ class MyDocuments : Fragment() {
     }
 
     private fun initClickListeners() {
+        binding.apply {
+            swipeRefresh.setOnRefreshListener {
+                viewmodel.getAllDocs()
+            }
+        }
     }
 
     private fun setDataInRecycler(filteredList: ArrayList<SignatureRequest>) {
+        if (binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
         if (filteredList.isEmpty())
             binding.noSignLayout.noSignIv.visibility = View.VISIBLE
         else
@@ -104,6 +111,9 @@ class MyDocuments : Fragment() {
     private fun initObservers() {
         viewmodel.myDocs.observe(viewLifecycleOwner, Observer {
             setDataInRecycler(it.signature_requests.filter { it.client_id == CONSTANTS.CLIENT_ID } as ArrayList<SignatureRequest>)
+        })
+        viewmodel.loadingModel.observe(viewLifecycleOwner, Observer {
+            binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         })
     }
 }
