@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.FragmentMyDocumentsBinding
+import com.teamdefine.legalvault.main.home.bottomsheet.ContractBottomSheet
 import com.teamdefine.legalvault.main.home.mydocs.adapter.MyDocsAdapter
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.CONSTANTS
@@ -27,7 +28,7 @@ class MyDocuments : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     lateinit var adapter: MyDocsAdapter
     private lateinit var firebaseFirestore: FirebaseFirestore
-    private val viewmodel: MyDocumentsVM by viewModels()
+    private val viewmodel: MyDocumentsVM by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,10 +87,16 @@ class MyDocuments : Fragment() {
         adapter = MyDocsAdapter(object : MyDocsAdapter.ItemClicks {
             override fun onItemClick(signature: SignatureRequest) {
                 Timber.e("Clicked: $signature\n")
+                showBottomSheet(signature)
             }
         })
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun showBottomSheet(signature: SignatureRequest) {
+        ContractBottomSheet.newInstance(signature = signature)
+            .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
     }
 
     private fun initClickListeners() {

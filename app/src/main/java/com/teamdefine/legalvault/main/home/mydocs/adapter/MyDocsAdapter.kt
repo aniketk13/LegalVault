@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teamdefine.legalvault.databinding.ItemSignRequestsBinding
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.Utility
-import timber.log.Timber
 
 class MyDocsAdapter(
     private val itemClicks: ItemClicks
@@ -42,7 +41,12 @@ class MyDocsAdapter(
         holder.apply {
             contractName.text = currentSign.subject
             contractBw.text = when (currentSign.signatures.size) {
-                2 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")} - ${currentSign.signatures[1]?.signer_name?.substringBefore(" ")}"
+                2 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")} - ${
+                    currentSign.signatures[1]?.signer_name?.substringBefore(
+                        " "
+                    )
+                }"
+
                 1 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")}"
                 else -> "Dummy User"
             }
