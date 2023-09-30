@@ -1,6 +1,7 @@
 package com.teamdefine.legalvault.api
 
 import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
+import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
 import com.teamdefine.legalvault.main.onboarding.model.ApiAppRequestModel
 import com.teamdefine.legalvault.main.onboarding.model.ApiAppResponseModel
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
@@ -9,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface HelloSignAPI {
     @Headers("Content-Type: application/json")
@@ -21,4 +23,7 @@ interface HelloSignAPI {
 
     @GET("v3/signature_request/list")
     suspend fun getSignatureRequests(): Response<MyDocsResponseModel>
+
+    @GET("v3/embedded/sign_url/{signature_id}")
+    suspend fun getSigningUrl(@Path("signature_id") signature_id:String):Response<SignUrlResponseModel>
 }
