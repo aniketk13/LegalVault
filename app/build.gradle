@@ -122,4 +122,8 @@ dependencies {
 
     //koin
     implementation("io.insert-koin:koin-android:$koin_version")
+
+    implementation 'com.github.evgenyneu:js-evaluator-for-android:v6.0.0'
+//    implementation 'com.dropbox.hellosign:hellosign-embedded:1.0.0'
+//    implementation 'com.dropbox.hellosign:hellosign-sdk:1.0.0'
 }

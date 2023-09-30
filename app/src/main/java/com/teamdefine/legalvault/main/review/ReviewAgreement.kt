@@ -87,7 +87,8 @@ class ReviewAgreement : Fragment() {
         viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
             viewModel.sendDocForSignatures(
                 EmbeddedSignRequestModel(
-                    clientId = it.getValue("clientId") as String,
+//                    clientId = it.getValue("clientId") as String,
+                    clientId = "a0892a4eeac8e0113269a171861d99b3",
                     documentTitle = args.documentName,
                     documentSubject = "${args.documentName}-Subject",
                     documentMessage = "${args.documentName}-Message",
