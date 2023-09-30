@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.teamdefine.legalvault.databinding.FragmentTestBinding
 
@@ -24,6 +23,7 @@ class Test : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        WebView.setWebContentsDebuggingEnabled(true)
         binding.webView.webChromeClient = WebChromeClient()
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.useWideViewPort = true
