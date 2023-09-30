@@ -1,7 +1,5 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
-import timber.log.Timber
-
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +15,7 @@ import com.teamdefine.legalvault.main.home.BiometricAuthListener
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
+import timber.log.Timber
 
 class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private val bottomSheetVM: MyDocumentsVM by activityViewModels()
@@ -81,7 +80,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     override fun onBiometricAuthenticationSuccess(result: BiometricPrompt.AuthenticationResult) {
-
+        Timber.i("Success Biometric")
     }
 
     override fun onBiometricAuthenticationError(errorCode: Int, errorMessage: String) {
