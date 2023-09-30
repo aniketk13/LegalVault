@@ -18,12 +18,11 @@ import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signers
+import com.teamdefine.legalvault.main.utility.CONSTANTS
 import com.teamdefine.legalvault.main.utility.Utility.showProgressDialog
 import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
-
-const val MY_CLIENT_ID = "d0b0258b7a737cda807b5b996f31a765"
 
 class ReviewAgreement : Fragment() {
     private val viewModel: ReviewAgreementViewModel by viewModels()
@@ -73,7 +72,17 @@ class ReviewAgreement : Fragment() {
         })
         viewModel.publicSavedFileUrl.observe(viewLifecycleOwner, Observer { publicUrlFromDB ->
             publicURL = publicUrlFromDB
-            viewModel.getDataFromFirestore()
+            viewModel.sendDocForSignatures(
+                EmbeddedSignRequestModel(
+                    clientId = CONSTANTS.CLIENT_ID,
+                    documentTitle = args.documentName,
+                    documentSubject = "${args.documentName}-Subject",
+                    documentMessage = "${args.documentName}-Message",
+                    documentSigners = listOfSigner as ArrayList<Signers>,
+                    arrayListOf(publicURL)
+                )
+            )
+//            viewModel.getDataFromFirestore()
         })
         viewModel.loadingModel.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -84,19 +93,9 @@ class ReviewAgreement : Fragment() {
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
             findNavController().popBackStack()
         })
-        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
-            viewModel.sendDocForSignatures(
-                EmbeddedSignRequestModel(
-//                    clientId = it.getValue("clientId") as String,
-                    clientId = "a0892a4eeac8e0113269a171861d99b3",
-                    documentTitle = args.documentName,
-                    documentSubject = "${args.documentName}-Subject",
-                    documentMessage = "${args.documentName}-Message",
-                    documentSigners = listOfSigner as ArrayList<Signers>,
-                    arrayListOf(publicURL)
-                )
-            )
-        })
+//        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
+//
+//        })
     }
 
     private fun initClickListeners() {

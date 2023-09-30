@@ -15,5 +15,11 @@ data class SignatureRequest(
     val is_complete: Boolean,
     val files_url: String,
     val client_id: String,
-    val signature_request_id: String
+    val signature_request_id: String,
+    val signatures: ArrayList<Signatures?>
+)
+
+data class Signatures(
+    val signer_email_address: String,
+    val signer_name: String
 )

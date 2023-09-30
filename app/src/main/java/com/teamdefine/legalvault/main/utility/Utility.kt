@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object Utility {
     suspend fun createPdfFromTextAsync(
@@ -82,4 +86,15 @@ object Utility {
         this.setCancelable(false)
         this.show()
     }
+
+    fun convertTimestampToDateInIST(timestamp: Long): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Kolkata") // Set the timezone to IST
+        val date = Date(timestamp * 1000L)
+        return dateFormat.format(date)
+    }
+}
+
+object CONSTANTS {
+    val CLIENT_ID = "a0892a4eeac8e0113269a171861d99b3"
 }

@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.FragmentMyDocumentsBinding
+import com.teamdefine.legalvault.main.home.mydocs.adapter.MyDocsAdapter
+import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
+import com.teamdefine.legalvault.main.utility.CONSTANTS
+import timber.log.Timber
 
 class MyDocuments : Fragment() {
     private lateinit var binding: FragmentMyDocumentsBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var adapter: MyDocsAdapter
     private lateinit var firebaseFirestore: FirebaseFirestore
     private val viewmodel: MyDocumentsVM by viewModels()
     override fun onCreateView(
@@ -28,24 +34,34 @@ class MyDocuments : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
         initClickListeners()
         initObservers()
     }
 
+    private fun initAdapter() {
+        adapter = MyDocsAdapter(object : MyDocsAdapter.ItemClicks {
+            override fun onItemClick(signature: SignatureRequest) {
+                Timber.e("Clicked: $signature\n")
+            }
+        })
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+    }
+
     private fun initClickListeners() {
-        TODO("Not yet implemented")
+    }
+
+    private fun setDataInRecycler(filteredList: ArrayList<SignatureRequest>) {
+        if (filteredList.isEmpty())
+            binding.noSignLayout.noSignIv.visibility = View.VISIBLE
+        else
+            adapter.setData(filteredList)
     }
 
     private fun initObservers() {
         viewmodel.myDocs.observe(viewLifecycleOwner, Observer {
-            viewmodel.getDataFromFirestore()
-        })
-        viewmodel.firestoreSnapshot.observe(viewLifecycleOwner, Observer { snapshot ->
-            val clientId = snapshot.getValue("clientId") as String
-            viewmodel.myDocs.value?.signature_requests?.let { requests ->
-                val filteredList = requests.filter { it.client_id == clientId }
-                //send data to recycler view
-            }
+            setDataInRecycler(it.signature_requests.filter { it.client_id == CONSTANTS.CLIENT_ID } as ArrayList<SignatureRequest>)
         })
     }
 }
