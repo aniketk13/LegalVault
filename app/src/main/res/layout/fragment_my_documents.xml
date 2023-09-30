@@ -32,7 +32,7 @@
         android:layout_height="match_parent" />
 
     <include
-        android:id="@+id/loadingModel"
+        android:id="@+id/noSignLayout"
         layout="@layout/layout_no_sign_requests"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
