@@ -9,7 +9,7 @@ import timber.log.Timber
 object BiometricUtil {
 
     private fun initBiometricPrompt(
-        context: Fragment,listener: BiometricAuthListener
+        context: Fragment, listener: BiometricAuthListener
     ): BiometricPrompt {
         // 1
         val executor = ContextCompat.getMainExecutor(context.requireContext())
@@ -32,11 +32,11 @@ object BiometricUtil {
         }
 
         // 3
-        return BiometricPrompt(context,executor,callback)
+        return BiometricPrompt(context, executor, callback)
     }
 
 
-    fun showBiometricPrompt(context: Fragment,listener:BiometricAuthListener) {
+    fun showBiometricPrompt(context: Fragment, listener: BiometricAuthListener) {
         // 1
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric Authentication")
@@ -45,7 +45,7 @@ object BiometricUtil {
 //            .setNegativeButtonText("Cancel")
             .build()
 
-        val biometricPrompt= initBiometricPrompt(context,listener)
+        val biometricPrompt = initBiometricPrompt(context, listener)
         biometricPrompt.authenticate(promptInfo)
 
 

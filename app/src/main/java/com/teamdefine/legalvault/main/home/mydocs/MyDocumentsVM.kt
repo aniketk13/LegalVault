@@ -10,15 +10,14 @@ import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.math.sign
 
 class MyDocumentsVM : BaseViewModel() {
     private val _myDocs: MutableLiveData<MyDocsResponseModel> = MutableLiveData()
     val myDocs: LiveData<MyDocsResponseModel>
         get() = _myDocs
 
-    private val _signingUrl:MutableLiveData<SignUrlResponseModel> = MutableLiveData()
-    val signingUrl:LiveData<SignUrlResponseModel>
+    private val _signingUrl: MutableLiveData<SignUrlResponseModel> = MutableLiveData()
+    val signingUrl: LiveData<SignUrlResponseModel>
         get() = _signingUrl
 
     fun getAllDocs() {
@@ -39,18 +38,18 @@ class MyDocumentsVM : BaseViewModel() {
         }
     }
 
-    fun getDocSignUrl(signature_id:String){
+    fun getDocSignUrl(signature_id: String) {
         viewModelScope.launch {
             try {
                 updateLoadingModel(LoadingModel.LOADING)
-                val response=RetrofitInstance.api.getSigningUrl(signature_id)
-                if(response.isSuccessful){
+                val response = RetrofitInstance.api.getSigningUrl(signature_id)
+                if (response.isSuccessful) {
                     updateLoadingModel(LoadingModel.COMPLETED)
                     _signingUrl.postValue(response.body())
-                }else {
+                } else {
                     updateLoadingModel(LoadingModel.ERROR)
                 }
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 updateLoadingModel(LoadingModel.ERROR)
                 Timber.e(e.message.toString())
             }

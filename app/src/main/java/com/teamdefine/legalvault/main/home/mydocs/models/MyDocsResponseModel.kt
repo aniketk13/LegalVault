@@ -30,5 +30,5 @@ data class SignatureRequest(
 data class Signatures(
     val signer_email_address: String,
     val signer_name: String,
-    val signature_id:String
+    val signature_id: String
 ) : Parcelable

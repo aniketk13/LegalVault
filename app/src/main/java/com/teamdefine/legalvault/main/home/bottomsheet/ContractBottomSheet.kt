@@ -3,7 +3,6 @@ package com.teamdefine.legalvault.main.home.bottomsheet
 import timber.log.Timber
 
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
 
-class ContractBottomSheet : BottomSheetDialogFragment(),BiometricAuthListener {
+class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private val bottomSheetVM: MyDocumentsVM by activityViewModels()
     private lateinit var binding: LayoutMenuBottomSheetBinding
     private lateinit var signature: SignatureRequest
@@ -58,7 +57,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(),BiometricAuthListener {
 
     private fun initObserver() {
         bottomSheetVM.signingUrl.observe(viewLifecycleOwner, Observer {
-            Timber.i(it.embedded.sign_url)
+            showBiometricLoginOption()
         })
     }
 
@@ -69,19 +68,20 @@ class ContractBottomSheet : BottomSheetDialogFragment(),BiometricAuthListener {
     private fun initClickListeners() {
         binding.apply {
             this.signContract.setOnClickListener {
-                showBiometricLoginOption()
-                val signers=signature.signatures
-                val filter=signers.indexOfFirst { it?.signer_email_address == firebaseInstance.currentUser?.email }
+                val signers = signature.signatures
+                val filter =
+                    signers.indexOfFirst { it?.signer_email_address == firebaseInstance.currentUser?.email }
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
             }
         }
     }
 
     private fun showBiometricLoginOption() {
-        BiometricUtil.showBiometricPrompt(this,this)
+        BiometricUtil.showBiometricPrompt(this, this)
     }
 
     override fun onBiometricAuthenticationSuccess(result: BiometricPrompt.AuthenticationResult) {
+
     }
 
     override fun onBiometricAuthenticationError(errorCode: Int, errorMessage: String) {
