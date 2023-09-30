@@ -2,8 +2,8 @@
 <html lang="en">
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HelloSign Example</title>
     <!-- Include the HelloSign library via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/hellosign-embedded"></script>
@@ -13,23 +13,21 @@
 
 <!-- Include your JavaScript code within a script tag -->
 <script type="module">
-        import HelloSign from 'https://cdn.jsdelivr.net/npm/hellosign-embedded@2.11.1/+esm'
-        setTimeout(function(){
+        import HelloSign from 'https://cdn.jsdelivr.net/npm/hellosign-embedded@2.11.1/+esm';
+
         const client = new HelloSign({
-          clientId: "93bcbcb24b2c9f82c2fd19f322d91c08",
+          clientId: "d0b0258b7a737cda807b5b996f31a765",
         });
 
         console.log("test");
         client.open(
-          "https://app.hellosign.com/editor/embeddedSign?signature_id=ca4affe89cf8406b1259f431baeea2c3&token=e628dddcb19bd34d70c2267bcdd80c8f",
+          "https://app.hellosign.com/editor/embeddedSign?signature_id=f4ad16bb6d6035b481484bc129eb5b41&token=e3a1bb8348e38ff30d0a099c8bb3aee2",
           {
             skipDomainVerification: true,
             testMode: true,
           }
         );
-        },10000);
-
-</script>
+      </script>
 </body>
 </html>
 </html>

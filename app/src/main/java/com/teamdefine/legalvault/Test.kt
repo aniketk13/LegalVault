@@ -1,9 +1,13 @@
 package com.teamdefine.legalvault
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.teamdefine.legalvault.databinding.FragmentTestBinding
 
@@ -17,18 +21,12 @@ class Test : Fragment() {
         binding = it
     }.root
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.webView.webChromeClient = WebChromeClient()
-//        binding.webView.settings.javaScriptEnabled = true
-        binding.webView.loadUrl("https://app.hellosign.com/editor/embeddedSign?signature_id=ca4affe89cf8406b1259f431baeea2c3&token=e628dddcb19bd34d70c2267bcdd80c8f")
-//        val hellosignEmbedded = HelloSignEmbedded(this,abc)
-//        val helloSignClient = HelloSignClient(this, "YOUR_CLIENT_ID", "YOUR_API_KEY")
-//        binding.webView.setWebViewClient(object : WebViewClient() {
-        //        file:///android_asset/scratch.html
-//            override fun onPageFinished(view: WebView, weburl: String) {
-//                binding.webView.loadUrl("javascript:initializeHelloSign()")
-//            }
-//        })
+        binding.webView.webChromeClient = WebChromeClient()
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.settings.useWideViewPort = true
+        binding.webView.loadUrl("file:///android_asset/scratch.html");
     }
 }
