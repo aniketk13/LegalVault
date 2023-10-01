@@ -15,16 +15,16 @@
         import HelloSign from 'https://cdn.jsdelivr.net/npm/hellosign-embedded@2.11.1/+esm';
 
         const client = new HelloSign({
-          clientId: "d0b0258b7a737cda807b5b996f31a765",
+          clientId: 'd0b0258b7a737cda807b5b996f31a765'
         });
 
-        console.log("test");
-        client.open('https://app.hellosign.com/editor/embeddedSign?signature_id=f4ad16bb6d6035b481484bc129eb5b41&token=e3a1bb8348e38ff30d0a099c8bb3aee2',
+        client.open('__SIGN_URL__',
           {
             skipDomainVerification: true,
             testMode: true,
           }
         );
+
 
 </script>
 </body>

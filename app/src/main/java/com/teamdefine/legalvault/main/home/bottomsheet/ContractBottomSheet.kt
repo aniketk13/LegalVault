@@ -100,12 +100,6 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             1 -> Timber.i("Success with Previewing Contract")
             2 -> {
                 Timber.i("Success with Signing Contract")
-//                val utf8: ByteArray = htmlMessage.getBytes("UTF8")
-//                val htmlMessage = String(org.bouncycastle.util.encoders.Base64().encode(utf8,0,utf8.lastIndex))
-//
-//
-//                val dec: ByteArray = org.bouncycastle.util.encoders.Base64().decode(htmlMessage.getBytes())
-//                htmlMessage = kotlin.String(dec, "UTF8")
                 var newContent: String? = null
                 try {
                     val inputStream = requireContext().assets.open("scratch.html")
@@ -114,6 +108,11 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                     e.printStackTrace()
                 }
                 if (newContent != null) {
+                    Timber.i(newContent)
+                    newContent = newContent.replace(
+                        "__SIGN_URL__",
+                        "${bottomSheetVM.signingUrl.value?.embedded?.sign_url}"
+                    )
                     Timber.i(newContent)
                     val body = GitHubRequestModel(inputs = Input(new_content = "$newContent"))
                     Timber.i(body.toString())
