@@ -61,9 +61,19 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         bottomSheetVM.signingUrl.observe(viewLifecycleOwner, Observer {
             showBiometricLoginOption()
         })
-        bottomSheetVM.statusUpdateFile.observe(viewLifecycleOwner, Observer {
+        bottomSheetVM.updateRequestSuccess.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                Timber.i("New file sent to github")
+                bottomSheetVM.getUpdateFileStatus()
+            }
+        })
+        bottomSheetVM.updateFileSuccess.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                bottomSheetVM.getPageDeploymentStatus()
+            }
+        })
+        bottomSheetVM.pageDeployedSuccess.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                Timber.i("Page Deployed Successfully")
             }
         })
     }
@@ -98,30 +108,28 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         Timber.i("Success Biometric")
         when (flag) {
             1 -> Timber.i("Success with Previewing Contract")
-            2 -> {
-                Timber.i("Success with Signing Contract")
-                var newContent: String? = null
-                try {
-                    val inputStream = requireContext().assets.open("scratch.html")
-                    newContent = inputStream.bufferedReader().use { it.readText() }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                if (newContent != null) {
-                    Timber.i(newContent)
-                    newContent = newContent.replace(
-                        "__SIGN_URL__",
-                        "${bottomSheetVM.signingUrl.value?.embedded?.sign_url}"
-                    )
-                    Timber.i(newContent)
-                    val body = GitHubRequestModel(inputs = Input(new_content = "$newContent"))
-                    Timber.i(body.toString())
-                    bottomSheetVM.updateFileGithub(body)
-                }
-            }
-
+            2 -> signContract()
             3 -> Timber.i("Success with Modifying Contract")
             else -> Timber.i("Error/Select an Option")
+        }
+    }
+
+    private fun signContract() {
+        Timber.i("Success with Signing Contract")
+        var newContent: String? = null
+        try {
+            val inputStream = requireContext().assets.open("scratch.html")
+            newContent = inputStream.bufferedReader().use { it.readText() }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        if (newContent != null) {
+            newContent = newContent.replace(
+                "__SIGN_URL__",
+                "${bottomSheetVM.signingUrl.value?.embedded?.sign_url}"
+            )
+            val body = GitHubRequestModel(inputs = Input(new_content = "$newContent"))
+            bottomSheetVM.updateFileGithub(body)
         }
     }
 
