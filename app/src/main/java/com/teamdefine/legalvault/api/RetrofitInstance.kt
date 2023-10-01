@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://api.hellosign.com/"
 private const val BASE_URL2 = "https://api.deepinfra.com/"
+private const val BASE_URL3 = "https://api.github.com/"
 
 object RetrofitInstance {
     //interceptors
@@ -52,5 +53,19 @@ object RetrofitInstance2 {
 
     val gptApi: GptAPI by lazy {
         retrofit2.create(GptAPI::class.java)
+    }
+}
+
+object RetrofitInstance3 {
+    var loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    var clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder().addInterceptor(
+        loggingInterceptor
+    )
+    private val retrofit3 by lazy {
+        Retrofit.Builder().baseUrl(BASE_URL3).client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create()).build()
+    }
+    val githubAPI: GitHubAPI by lazy {
+        retrofit3.create(GitHubAPI::class.java)
     }
 }

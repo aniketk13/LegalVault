@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -19,7 +17,6 @@ import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.CONSTANTS
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import timber.log.Timber
-import java.util.concurrent.Executor
 
 class MyDocuments : Fragment() {
     private lateinit var binding: FragmentMyDocumentsBinding

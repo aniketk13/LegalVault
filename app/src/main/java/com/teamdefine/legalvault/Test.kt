@@ -27,6 +27,6 @@ class Test : Fragment() {
         binding.webView.webChromeClient = WebChromeClient()
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.useWideViewPort = true
-        binding.webView.loadUrl("file:///android_asset/scratch.html");
+        binding.webView.loadUrl("https://aniketk13.github.io/testing/");
     }
 }

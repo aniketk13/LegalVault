@@ -12,6 +12,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
+import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
+import com.teamdefine.legalvault.main.home.bottomsheet.model.Input
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
@@ -22,6 +24,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private lateinit var binding: LayoutMenuBottomSheetBinding
     private lateinit var signature: SignatureRequest
     private lateinit var firebaseInstance: FirebaseAuth
+    private var flag: Int = 0
 
 
     companion object {
@@ -58,6 +61,11 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         bottomSheetVM.signingUrl.observe(viewLifecycleOwner, Observer {
             showBiometricLoginOption()
         })
+        bottomSheetVM.statusUpdateFile.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                Timber.i("New file sent to github")
+            }
+        })
     }
 
     private fun initViews() {
@@ -67,10 +75,17 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private fun initClickListeners() {
         binding.apply {
             this.signContract.setOnClickListener {
+                flag = 2
                 val signers = signature.signatures
                 val filter =
                     signers.indexOfFirst { it?.signer_email_address == firebaseInstance.currentUser?.email }
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
+            }
+            previewContract.setOnClickListener {
+                flag = 1
+            }
+            modifyContract.setOnClickListener {
+                flag = 3
             }
         }
     }
@@ -81,6 +96,34 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
 
     override fun onBiometricAuthenticationSuccess(result: BiometricPrompt.AuthenticationResult) {
         Timber.i("Success Biometric")
+        when (flag) {
+            1 -> Timber.i("Success with Previewing Contract")
+            2 -> {
+                Timber.i("Success with Signing Contract")
+//                val utf8: ByteArray = htmlMessage.getBytes("UTF8")
+//                val htmlMessage = String(org.bouncycastle.util.encoders.Base64().encode(utf8,0,utf8.lastIndex))
+//
+//
+//                val dec: ByteArray = org.bouncycastle.util.encoders.Base64().decode(htmlMessage.getBytes())
+//                htmlMessage = kotlin.String(dec, "UTF8")
+                var newContent: String? = null
+                try {
+                    val inputStream = requireContext().assets.open("scratch.html")
+                    newContent = inputStream.bufferedReader().use { it.readText() }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                if (newContent != null) {
+                    Timber.i(newContent)
+                    val body = GitHubRequestModel(inputs = Input(new_content = "$newContent"))
+                    Timber.i(body.toString())
+                    bottomSheetVM.updateFileGithub(body)
+                }
+            }
+
+            3 -> Timber.i("Success with Modifying Contract")
+            else -> Timber.i("Error/Select an Option")
+        }
     }
 
     override fun onBiometricAuthenticationError(errorCode: Int, errorMessage: String) {

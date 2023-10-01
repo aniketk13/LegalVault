@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.teamdefine.legalvault.api.RetrofitInstance
+import com.teamdefine.legalvault.api.RetrofitInstance3
 import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
+import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
 import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
 import kotlinx.coroutines.launch
@@ -19,6 +21,10 @@ class MyDocumentsVM : BaseViewModel() {
     private val _signingUrl: MutableLiveData<SignUrlResponseModel> = MutableLiveData()
     val signingUrl: LiveData<SignUrlResponseModel>
         get() = _signingUrl
+
+    private val _statusUpdateFile: MutableLiveData<Boolean> = MutableLiveData(false)
+    val statusUpdateFile: LiveData<Boolean>
+        get() = _statusUpdateFile
 
     fun getAllDocs() {
         viewModelScope.launch {
@@ -46,6 +52,24 @@ class MyDocumentsVM : BaseViewModel() {
                 if (response.isSuccessful) {
                     updateLoadingModel(LoadingModel.COMPLETED)
                     _signingUrl.postValue(response.body())
+                } else {
+                    updateLoadingModel(LoadingModel.ERROR)
+                }
+            } catch (e: Exception) {
+                updateLoadingModel(LoadingModel.ERROR)
+                Timber.e(e.message.toString())
+            }
+        }
+    }
+
+    fun updateFileGithub(updateReqBody: GitHubRequestModel) {
+        viewModelScope.launch {
+            try {
+                updateLoadingModel(LoadingModel.LOADING)
+                val response = RetrofitInstance3.githubAPI.updateFile(updateReqBody)
+                if (response.isSuccessful) {
+                    updateLoadingModel(LoadingModel.COMPLETED)
+                    _statusUpdateFile.postValue(true)
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
                 }
