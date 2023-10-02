@@ -34,9 +34,11 @@ data class Signers(
     @SerializedName("name")
     val signerName: String,
     @SerializedName("email_address")
-    val signerEmail: String
+    val signerEmail: String,
+    @SerializedName("order")
+    val requestOrder: Int
 ) {
-    constructor() : this("TestName", "nitish.sharma2210@gmail.com")
+    constructor() : this("TestName", "nitish.sharma2210@gmail.com", 0)
 }
 
 data class FileUrls(
