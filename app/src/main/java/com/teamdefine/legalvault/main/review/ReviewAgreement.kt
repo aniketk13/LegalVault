@@ -115,7 +115,7 @@ class ReviewAgreement : Fragment() {
                 val signer = binding.container.getChildAt(index)
                 val name = signer.findViewById<EditText>(R.id.inputName)?.text.toString()
                 val email = signer.findViewById<EditText>(R.id.inputEmail)?.text.toString()
-                Signers(name, email)
+                Signers(name, email, index - 1)
             }
             Timber.i(listOfSigner.toString())
             viewModel.generatePdf(

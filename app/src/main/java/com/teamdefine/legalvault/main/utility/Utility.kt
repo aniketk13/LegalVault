@@ -96,5 +96,5 @@ object Utility {
 }
 
 object CONSTANTS {
-    val CLIENT_ID = "a0892a4eeac8e0113269a171861d99b3"
+    val CLIENT_ID = "31bc2e280d7c0e7324b89bd3f3232a48"
 }
