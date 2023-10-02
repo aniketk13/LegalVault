@@ -118,7 +118,7 @@ class MyDocumentsVM : BaseViewModel() {
 
     fun getPageDeploymentStatus() {
         viewModelScope.launch {
-            delay(15000)
+            delay(12000)
             while (true) {
                 try {
                     updateLoadingModel(LoadingModel.LOADING)
@@ -136,7 +136,7 @@ class MyDocumentsVM : BaseViewModel() {
                     updateLoadingModel(LoadingModel.ERROR)
                     Timber.e(e.message.toString())
                 }
-                delay(15000)
+                delay(12000)
             }
         }
     }
