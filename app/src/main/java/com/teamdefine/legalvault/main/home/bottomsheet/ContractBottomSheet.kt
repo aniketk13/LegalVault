@@ -1,8 +1,6 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +8,12 @@ import android.view.ViewGroup
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
+import com.teamdefine.legalvault.main.home.HomeFragmentDirections
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
 import com.teamdefine.legalvault.main.home.bottomsheet.model.Input
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
@@ -76,10 +76,10 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         bottomSheetVM.pageDeployedSuccess.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Timber.i("Page Deployed Successfully")
-                val url = "https://aniketk13.github.io/testing/"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(intent)
-//
+//                val url = "https://aniketk13.github.io/testing/"
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//                startActivity(intent)
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTest())
             }
         })
     }

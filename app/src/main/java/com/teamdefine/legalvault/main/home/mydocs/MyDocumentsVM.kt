@@ -79,7 +79,7 @@ class MyDocumentsVM : BaseViewModel() {
                 updateLoadingModel(LoadingModel.LOADING)
                 val response = RetrofitInstance3.githubAPI.updateFile(updateReqBody)
                 if (response.isSuccessful) {
-                    updateLoadingModel(LoadingModel.COMPLETED)
+//                    updateLoadingModel(LoadingModel.COMPLETED)
                     _updateRequestSuccess.postValue(true)
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
@@ -101,7 +101,7 @@ class MyDocumentsVM : BaseViewModel() {
                     if (response.isSuccessful) {
                         if (response.body()?.workflow_runs?.get(0)?.status == "completed") {
                             _updateFileSuccess.postValue(true)
-                            updateLoadingModel(LoadingModel.COMPLETED)
+//                            updateLoadingModel(LoadingModel.COMPLETED)
                             break
                         }
                     } else {

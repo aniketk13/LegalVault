@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_homeFragment_to_reviewAgreement"
             app:destination="@id/reviewAgreement" />
+        <action
+            android:id="@+id/action_homeFragment_to_test"
+            app:destination="@id/test" />
     </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
