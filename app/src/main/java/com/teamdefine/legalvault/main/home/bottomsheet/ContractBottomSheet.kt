@@ -1,6 +1,8 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +76,10 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         bottomSheetVM.pageDeployedSuccess.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Timber.i("Page Deployed Successfully")
+                val url = "https://aniketk13.github.io/testing/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+//
             }
         })
     }
