@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
@@ -26,6 +27,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private lateinit var binding: LayoutMenuBottomSheetBinding
     private lateinit var signature: SignatureRequest
     private lateinit var firebaseInstance: FirebaseAuth
+    private lateinit var firebaseFirestore: FirebaseFirestore
     private var flag: Int = 0
 
 
@@ -48,6 +50,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         savedInstanceState: Bundle?
     ): View? = LayoutMenuBottomSheetBinding.inflate(inflater, container, false).also {
         firebaseInstance = FirebaseAuth.getInstance()
+        firebaseFirestore = FirebaseFirestore.getInstance()
         binding = it
         signature = arguments?.getParcelable("SIGNATURE")!!
     }.root
@@ -101,7 +104,9 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 flag = 1
             }
             modifyContract.setOnClickListener {
+//                val signatureRequestId=signature.signature_request_id
                 flag = 3
+                showBiometricLoginOption()
             }
         }
     }
@@ -115,9 +120,28 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         when (flag) {
             1 -> Timber.i("Success with Previewing Contract")
             2 -> signContract()
-            3 -> Timber.i("Success with Modifying Contract")
+            3 -> modifyContract()
             else -> Timber.i("Error/Select an Option")
         }
+    }
+
+    private fun modifyContract() {
+        var documentText: String? = ""
+        Timber.i("Success with Modifying Contract")
+        firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
+            .addOnCompleteListener {
+                if (it.result.exists()) {
+                    documentText = it.result.getString("text")
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionHomeFragmentToReviewAgreement(
+                            documentText!!,
+                            signature.subject,
+                            signature.signature_request_id
+                        )
+                    )
+                    dismiss()
+                }
+            }
     }
 
     private fun signContract() {

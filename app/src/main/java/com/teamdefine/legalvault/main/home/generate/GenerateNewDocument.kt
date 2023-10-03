@@ -94,7 +94,11 @@ class GenerateNewDocument : Fragment() {
 
     private fun navigateToEditDocument(generatedText: String, documentName: String) {
         findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToReviewAgreement(generatedText, documentName)
+            HomeFragmentDirections.actionHomeFragmentToReviewAgreement(
+                generatedText,
+                documentName,
+                null
+            )
         )
     }
 }

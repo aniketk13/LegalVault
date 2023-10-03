@@ -97,7 +97,7 @@ class ReviewAgreement : Fragment() {
                 binding.documentEditText.text.toString()
             )
             uploadNodeToFirestore(node)
-            findNavController().popBackStack()
+//            findNavController().popBackStack()
         })
 //        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
 //
@@ -113,6 +113,20 @@ class ReviewAgreement : Fragment() {
         nodeDocument["status"] = "New"
         nodeDocument["nextNodeId"] = null
         firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
+        if (args.prevSignatureId != null)
+            changePrevDocStatus(args.prevSignatureId!!)
+        else
+            findNavController().popBackStack()
+    }
+
+    private fun changePrevDocStatus(prevSignatureId: String) {
+        val update = hashMapOf<String, Any>(
+            "status" to "Old"
+        )
+        firestoreInstance.collection("linkedLists").document(prevSignatureId).update(update)
+            .addOnCompleteListener {
+                findNavController().popBackStack()
+            }
     }
 
     private fun initClickListeners() {

@@ -1,6 +1,7 @@
 package com.teamdefine.legalvault.main.home.mydocs
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,15 +87,19 @@ class MyDocuments : Fragment() {
                     .document(documents[i].signature_request_id).get().addOnCompleteListener {
                         if (it.result.exists()) {
                             if (it.result.getString("status") == "New") {
+                                Timber.i("exists")
                                 val currentList = finalDocuments.get()
                                 currentList.add(documents[i])
                                 finalDocuments.set(currentList)
                             }
                         }
-                        if (i == documents.size - 1) {
-                            Timber.i(finalDocuments.get().toString())
-                            setDataInRecycler(finalDocuments.get())
-                        }
+                        Handler().postDelayed({
+                            if (i == documents.size - 1) {
+                                Timber.i(finalDocuments.get().toString())
+                                setDataInRecycler(finalDocuments.get())
+                            }
+                        }, 3000)
+
                     }
             }
 //            var list:MutableList<Node> = mutableListOf()
