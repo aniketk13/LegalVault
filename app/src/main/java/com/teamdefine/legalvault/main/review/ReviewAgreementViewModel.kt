@@ -13,8 +13,8 @@ import com.teamdefine.legalvault.api.RetrofitInstance
 import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
+import com.teamdefine.legalvault.main.review.model.EmbeddedSignResponseModel
 import com.teamdefine.legalvault.main.utility.Utility
-import com.teamdefine.legalvault.main.utility.event.Event
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import timber.log.Timber
@@ -30,8 +30,13 @@ class ReviewAgreementViewModel : BaseViewModel(), KoinComponent {
     val publicSavedFileUrl: LiveData<String>
         get() = _publicSavedFileUrl
 
-    private val _docSentForSignatures: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    val docSentForSignatures: LiveData<Event<Boolean>>
+    //    private val _docSentForSignatures: MutableLiveData<Event<Boolean>> = MutableLiveData()
+//    val docSentForSignatures: LiveData<Event<Boolean>>
+//        get() = _docSentForSignatures
+//
+    private val _docSentForSignatures: MutableLiveData<EmbeddedSignResponseModel> =
+        MutableLiveData()
+    val docSentForSignatures: LiveData<EmbeddedSignResponseModel>
         get() = _docSentForSignatures
 
     fun generatePdf(context: Context, generatedText: String, fileName: String, view: View) {
@@ -83,7 +88,8 @@ class ReviewAgreementViewModel : BaseViewModel(), KoinComponent {
                 if (response.isSuccessful) {
                     updateLoadingModel(LoadingModel.COMPLETED)
                     Timber.e("Successful")
-                    _docSentForSignatures.postValue(Event(true))
+                    _docSentForSignatures.postValue(response.body())
+//                    _docSentForSignatures.postValue(Event(true))
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
                     Timber.e("Unsuccessful: ${response.errorBody().toString()}")
