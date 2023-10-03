@@ -11,8 +11,15 @@ import com.itextpdf.layout.element.Paragraph
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.text.PDFTextStripper
+import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -93,8 +100,40 @@ object Utility {
         val date = Date(timestamp * 1000L)
         return dateFormat.format(date)
     }
+
+    class NetworkException(message: String) : IOException(message)
+
+    suspend fun extractTextFromPdfUrl(pdfUrl: String): String = withContext(Dispatchers.IO) {
+        try {
+            val connection = URL(pdfUrl).openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+
+            val inputStream = BufferedInputStream(connection.inputStream)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+
+            val buffer = ByteArray(1024)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead)
+            }
+
+            val pdfData = byteArrayOutputStream.toByteArray()
+
+            val document = PDDocument.load(pdfData)
+            val pdfStripper = PDFTextStripper()
+
+            val text = pdfStripper.getText(document)
+
+            document.close()
+            connection.disconnect()
+
+            return@withContext text
+        } catch (e: IOException) {
+            throw NetworkException("Error fetching or processing the PDF: ${e.message}")
+        }
+    }
 }
 
 object CONSTANTS {
-    val CLIENT_ID = "31bc2e280d7c0e7324b89bd3f3232a48"
+    val CLIENT_ID = "a0892a4eeac8e0113269a171861d99b3"
 }

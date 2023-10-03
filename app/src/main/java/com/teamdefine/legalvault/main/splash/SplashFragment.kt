@@ -24,7 +24,6 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val userInfo = checkLoggedInStatus()
         if (userInfo != null) {
             navigateToHomeFragment()

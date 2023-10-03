@@ -8,6 +8,7 @@ import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.model.GptRequestModel
 import com.teamdefine.legalvault.main.home.model.GptResponseModel
+import com.teamdefine.legalvault.main.utility.Utility
 import com.teamdefine.legalvault.main.utility.event.Event
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,6 +34,12 @@ class GenerateNewDocumentVM : BaseViewModel() {
         } catch (e: Exception) {
             updateLoadingModel(LoadingModel.ERROR)
             Timber.e(e.message.toString())
+        }
+    }
+
+    fun extractText(url: String) {
+        viewModelScope.launch {
+            Timber.e(Utility.extractTextFromPdfUrl(url))
         }
     }
 }

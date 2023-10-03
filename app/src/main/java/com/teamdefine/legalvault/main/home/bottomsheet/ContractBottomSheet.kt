@@ -98,12 +98,18 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
             }
             previewContract.setOnClickListener {
+                showPdfViewerBottomSheet()
                 flag = 1
             }
             modifyContract.setOnClickListener {
                 flag = 3
             }
         }
+    }
+
+    private fun showPdfViewerBottomSheet() {
+        PdfViewerBottomSheet.newInstance(pdfUrl = signature.files_url)
+            .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
     }
 
     private fun showBiometricLoginOption() {

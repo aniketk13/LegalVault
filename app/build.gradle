@@ -55,6 +55,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -128,4 +131,6 @@ dependencies {
 
 //    implementation 'com.dropbox.hellosign:hellosign-embedded:1.0.0'
 //    implementation 'com.dropbox.hellosign:hellosign-sdk:1.0.0'
+
+    implementation 'org.apache.pdfbox:pdfbox:2.0.28'
 }

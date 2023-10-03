@@ -91,6 +91,7 @@ class ReviewAgreement : Fragment() {
             }
         })
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
+            //save linked list mai doc ko, along with pointers on to the next (null), and value will be text
             findNavController().popBackStack()
         })
 //        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
@@ -111,6 +112,7 @@ class ReviewAgreement : Fragment() {
         }
 
         binding.compileContractButton.setOnClickListener {
+            //args.genText = binding.edittext
             listOfSigner = (1 until binding.container.childCount).map { index ->
                 val signer = binding.container.getChildAt(index)
                 val name = signer.findViewById<EditText>(R.id.inputName)?.text.toString()
@@ -120,7 +122,7 @@ class ReviewAgreement : Fragment() {
             Timber.i(listOfSigner.toString())
             viewModel.generatePdf(
                 requireContext(),
-                args.generatedText,
+                args.generatedText, //modify this
                 args.documentName,
                 binding.root
             )
