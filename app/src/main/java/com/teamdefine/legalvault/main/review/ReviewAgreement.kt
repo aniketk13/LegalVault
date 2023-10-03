@@ -16,11 +16,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
+import com.teamdefine.legalvault.main.home.generate.Node
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signers
 import com.teamdefine.legalvault.main.utility.CONSTANTS
 import com.teamdefine.legalvault.main.utility.Utility.showProgressDialog
-import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
 
@@ -90,13 +90,43 @@ class ReviewAgreement : Fragment() {
                 else -> if (progressDialog.isShowing) progressDialog.dismiss()
             }
         })
-        viewModel.docSentForSignatures.observe(viewLifecycleOwner, EventObserver {
-            //save linked list mai doc ko, along with pointers on to the next (null), and value will be text
-            findNavController().popBackStack()
+        viewModel.docSentForSignatures.observe(viewLifecycleOwner, Observer {
+            val node = Node(
+                it.signature_request.signature_request_id,
+                null,
+                binding.documentEditText.text.toString()
+            )
+            uploadNodeToFirestore(node)
+//            findNavController().popBackStack()
         })
 //        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
 //
 //        })
+    }
+
+    fun uploadNodeToFirestore(node: Node) {
+        // Create a Firestore document for the node
+        val nodeDocument = hashMapOf(
+            "value" to node.value
+        )
+        nodeDocument["text"] = node.text
+        nodeDocument["status"] = "New"
+        nodeDocument["nextNodeId"] = null
+        firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
+        if (args.prevSignatureId != null)
+            changePrevDocStatus(args.prevSignatureId!!)
+        else
+            findNavController().popBackStack()
+    }
+
+    private fun changePrevDocStatus(prevSignatureId: String) {
+        val update = hashMapOf<String, Any>(
+            "status" to "Old"
+        )
+        firestoreInstance.collection("linkedLists").document(prevSignatureId).update(update)
+            .addOnCompleteListener {
+                findNavController().popBackStack()
+            }
     }
 
     private fun initClickListeners() {
@@ -119,10 +149,11 @@ class ReviewAgreement : Fragment() {
                 val email = signer.findViewById<EditText>(R.id.inputEmail)?.text.toString()
                 Signers(name, email, index - 1)
             }
-            Timber.i(listOfSigner.toString())
+//            Timber.i(listOfSigner.toString())
             viewModel.generatePdf(
                 requireContext(),
-                args.generatedText, //modify this
+//                args.generatedText,
+                binding.documentEditText.text.toString(),
                 args.documentName,
                 binding.root
             )
