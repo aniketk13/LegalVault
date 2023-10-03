@@ -67,6 +67,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signContract" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/modificationHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_edit"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/metropolis_medium"
+            android:padding="15dp"
+            android:paddingStart="20dp"
+            android:text="Modification History"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modifyContract" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

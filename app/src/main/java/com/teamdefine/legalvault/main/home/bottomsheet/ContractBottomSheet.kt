@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
@@ -20,6 +21,9 @@ import com.teamdefine.legalvault.main.home.bottomsheet.model.Input
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
 class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
@@ -101,12 +105,16 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
             }
             previewContract.setOnClickListener {
-                showPdfViewerBottomSheet()
+//                showPdfViewerBottomSheet()
                 flag = 1
             }
             modifyContract.setOnClickListener {
 //                val signatureRequestId=signature.signature_request_id
                 flag = 3
+                showBiometricLoginOption()
+            }
+            modificationHistory.setOnClickListener {
+                flag = 4
                 showBiometricLoginOption()
             }
         }
@@ -127,8 +135,37 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             1 -> Timber.i("Success with Previewing Contract")
             2 -> signContract()
             3 -> modifyContract()
+            4 -> modificationHistory()
             else -> Timber.i("Error/Select an Option")
         }
+    }
+
+    private fun modificationHistory() {
+        firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
+            .addOnCompleteListener {
+                if (it.result.exists()) {
+                    GlobalScope.launch {
+                        generateHistory(it.result)
+                    }
+                }
+            }
+    }
+
+    private suspend fun generateHistory(result: DocumentSnapshot?) {
+        val finalHistory: ArrayList<String?> = arrayListOf()
+        var nextNodeId: Any? = result?.getString("nextNodeId")
+        finalHistory.add(result?.getString("value"))
+        while (nextNodeId != null) {
+            val it =
+                firebaseFirestore.collection("linkedLists").document(nextNodeId.toString()).get()
+                    .await()
+            if (it.exists()) {
+                finalHistory.add(nextNodeId.toString())
+                nextNodeId = it.get("nextNodeId")
+                Timber.i(nextNodeId.toString())
+            }
+        }
+        Timber.i(finalHistory.toString())
     }
 
     private fun modifyContract() {

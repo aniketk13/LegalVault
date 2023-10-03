@@ -111,12 +111,16 @@ class ReviewAgreement : Fragment() {
         )
         nodeDocument["text"] = node.text
         nodeDocument["status"] = "New"
-        nodeDocument["nextNodeId"] = null
-        firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
-        if (args.prevSignatureId != null)
+        if (args.prevSignatureId != null) {
+            nodeDocument["nextNodeId"] = args.prevSignatureId!!
+            firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
             changePrevDocStatus(args.prevSignatureId!!)
-        else
+        } else {
+            nodeDocument["nextNodeId"] = null
+            firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
             findNavController().popBackStack()
+        }
+
     }
 
     private fun changePrevDocStatus(prevSignatureId: String) {
