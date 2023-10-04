@@ -28,5 +28,8 @@ interface HelloSignAPI {
     @GET("v3/embedded/sign_url/{signature_id}")
     suspend fun getSigningUrl(@Path("signature_id") signature_id: String): Response<SignUrlResponseModel>
 
+    @GET("v3/signature_request/files/{files_url}")
+    suspend fun getFile(@Path("files_url")fileUrl: String): Response<Unit>
+
 
 }

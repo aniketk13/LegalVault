@@ -133,4 +133,9 @@ dependencies {
 //    implementation 'com.dropbox.hellosign:hellosign-sdk:1.0.0'
 
     implementation 'org.apache.pdfbox:pdfbox:2.0.28'
+    implementation("com.github.pokercc:ExpandableRecyclerView:0.9.3")
+
+    implementation 'com.airbnb.android:epoxy:4.4.2'
+    implementation "com.airbnb.android:epoxy-databinding:4.4.2"
+    kapt 'com.airbnb.android:epoxy-processor:4.4.0'
 }
