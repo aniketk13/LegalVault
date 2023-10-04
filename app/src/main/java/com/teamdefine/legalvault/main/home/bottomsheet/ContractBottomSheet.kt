@@ -11,19 +11,22 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
 import com.teamdefine.legalvault.main.home.bottomsheet.model.Input
+import com.teamdefine.legalvault.main.home.generate.Node
+import com.teamdefine.legalvault.main.home.history.MyArgs
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
@@ -145,27 +148,36 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             .addOnCompleteListener {
                 if (it.result.exists()) {
                     GlobalScope.launch {
-                        generateHistory(it.result)
+                        generateHistory(it.result.toObject(Node::class.java))
                     }
                 }
             }
     }
 
-    private suspend fun generateHistory(result: DocumentSnapshot?) {
-        val finalHistory: ArrayList<String?> = arrayListOf()
-        var nextNodeId: Any? = result?.getString("nextNodeId")
-        finalHistory.add(result?.getString("value"))
+    private suspend fun generateHistory(result: Node?) {
+        val headNode = result
+        val tempHistory: ArrayList<Node> = arrayListOf()
+        var finalHistory: Pair<Node, ArrayList<Node>>
+        var nextNodeId: Any? = result?.nextNodeId
+//        finalHistory.add(result?.getString("value"))
         while (nextNodeId != null) {
             val it =
                 firebaseFirestore.collection("linkedLists").document(nextNodeId.toString()).get()
                     .await()
             if (it.exists()) {
-                finalHistory.add(nextNodeId.toString())
+                it.toObject(Node::class.java)?.let { it1 -> tempHistory.add(it1) }
                 nextNodeId = it.get("nextNodeId")
                 Timber.i(nextNodeId.toString())
             }
         }
-        Timber.i(finalHistory.toString())
+        finalHistory = Pair(headNode!!, tempHistory)
+        withContext(Dispatchers.Main) {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToHistoryFragment(
+                    MyArgs(finalHistory)
+                )
+            )
+        }
     }
 
     private fun modifyContract() {
@@ -209,3 +221,10 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     override fun onBiometricAuthenticationError(errorCode: Int, errorMessage: String) {
     }
 }
+
+//4->3->2->1
+//pair(4,{3,2,1})
+//{pair(4,{3,2,1}),pair(3,{2,1}),pair(2,{1})}
+
+//8->7->6->5
+//pair(8,{7,6,5})

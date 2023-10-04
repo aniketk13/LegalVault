@@ -20,6 +20,7 @@ import com.teamdefine.legalvault.main.home.generate.Node
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
 import com.teamdefine.legalvault.main.review.model.Signers
 import com.teamdefine.legalvault.main.utility.CONSTANTS
+import com.teamdefine.legalvault.main.utility.Utility
 import com.teamdefine.legalvault.main.utility.Utility.showProgressDialog
 import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 import timber.log.Timber
@@ -91,10 +92,20 @@ class ReviewAgreement : Fragment() {
             }
         })
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, Observer {
+            var signersName = ""
+            for (i in listOfSigner.indices) {
+                if (i != listOfSigner.size - 1)
+                    signersName += "${listOfSigner[i].signerName},"
+                else
+                    signersName += listOfSigner[i].signerName
+            }
             val node = Node(
                 it.signature_request.signature_request_id,
                 null,
-                binding.documentEditText.text.toString()
+                binding.documentEditText.text.toString(),
+                Utility.convertTimestampToDateInIST(it.signature_request.created_at),
+                args.documentName,
+                signersName
             )
             uploadNodeToFirestore(node)
 //            findNavController().popBackStack()
@@ -111,6 +122,10 @@ class ReviewAgreement : Fragment() {
         )
         nodeDocument["text"] = node.text
         nodeDocument["status"] = "New"
+        nodeDocument["documentName"] = node.documentName
+
+        nodeDocument["signers"] = node.signers
+        nodeDocument["date"] = node.date
         if (args.prevSignatureId != null) {
             nodeDocument["nextNodeId"] = args.prevSignatureId!!
             firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)

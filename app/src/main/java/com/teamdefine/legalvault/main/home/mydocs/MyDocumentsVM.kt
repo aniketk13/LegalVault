@@ -141,11 +141,12 @@ class MyDocumentsVM : BaseViewModel() {
         }
     }
 
-    fun getFile(url: String){
+    fun getFile(url: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getFile("f21b80540fd259403e2dc9963e5a97be62f94024")
-            }catch (e: Exception){
+                val response =
+                    RetrofitInstance.api.getFile("f21b80540fd259403e2dc9963e5a97be62f94024")
+            } catch (e: Exception) {
                 Timber.e(e.message.toString())
             }
         }

@@ -6,7 +6,6 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
@@ -56,7 +55,10 @@ class PdfViewerBottomSheet : BottomSheetDialogFragment() {
             // Set up Basic Authentication credentials
             val username = "9263a4bc250926733b7a066634f918fe44ecd02d08c54d08ccad7c485d05bfdb"
             val password = ""
-            val authHeader = "Basic " + Base64.encodeToString("$username:$password".toByteArray(), Base64.NO_WRAP)
+            val authHeader = "Basic " + Base64.encodeToString(
+                "$username:$password".toByteArray(),
+                Base64.NO_WRAP
+            )
 
             pdfWebView.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {

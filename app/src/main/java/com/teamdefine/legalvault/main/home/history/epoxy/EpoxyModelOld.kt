@@ -4,8 +4,8 @@ import androidx.databinding.ViewDataBinding
 import com.airbnb.epoxy.DataBindingEpoxyModel
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.BR
+import com.teamdefine.legalvault.R
 
 
 @EpoxyModelClass(layout = R.layout.item_sign_requests_old)

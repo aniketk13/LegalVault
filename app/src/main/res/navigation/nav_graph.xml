@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_homeFragment_to_test"
             app:destination="@id/test" />
+        <action
+            android:id="@+id/action_homeFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
@@ -67,4 +70,13 @@
         android:name="com.teamdefine.legalvault.Test"
         android:label="fragment_test"
         tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.teamdefine.legalvault.main.home.history.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history">
+        <argument
+            android:name="history"
+            app:argType="com.teamdefine.legalvault.main.home.history.MyArgs" />
+    </fragment>
 </navigation>

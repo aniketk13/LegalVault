@@ -5,5 +5,6 @@ data class EmbeddedSignResponseModel(
 )
 
 data class Response(
-    val signature_request_id: String
+    val signature_request_id: String,
+    val created_at: Long
 )
