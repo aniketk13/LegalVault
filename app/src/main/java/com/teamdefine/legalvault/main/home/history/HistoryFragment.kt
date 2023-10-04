@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.teamdefine.legalvault.databinding.FragmentHistoryBinding
-import com.teamdefine.legalvault.main.home.history.epoxy.EpoxyHistoryController
 import com.teamdefine.legalvault.main.home.generate.Node
+import com.teamdefine.legalvault.main.home.history.epoxy.EpoxyHistoryController
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 
@@ -32,7 +33,23 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         setupRecyclerView()
+        setDataInEpoxy()
+    }
+
+    private fun initViews() {
+        binding.topToolbar.setNavigationOnClickListener {
+            try {
+                findNavController().popBackStack()
+            } catch (e: Exception) {
+                Timber.e(e.message.toString())
+            }
+        }
+    }
+
+    private fun setDataInEpoxy() {
+        historyController.setData(historyDoc.nodePair, "")
     }
 
     private fun setupRecyclerView() {
@@ -41,8 +58,6 @@ class HistoryFragment : Fragment() {
             adapter = historyController.adapter
         }
     }
-
-
 }
 
 @Parcelize
