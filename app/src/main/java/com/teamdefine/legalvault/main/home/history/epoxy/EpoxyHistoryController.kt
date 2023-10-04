@@ -5,15 +5,13 @@ import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.Utility
 
 class EpoxyHistoryController() :
-    Typed2EpoxyController<ArrayList<Pair<SignatureRequest, ArrayList<SignatureRequest>>>, String>() {
+    Typed2EpoxyController<Pair<SignatureRequest, ArrayList<SignatureRequest>>, String>() {
     override fun buildModels(
-        signatureData: ArrayList<Pair<SignatureRequest, ArrayList<SignatureRequest>>>?,
+        signatureData: Pair<SignatureRequest, ArrayList<SignatureRequest>>?,
         data2: String?
     ) {
         signatureData?.let {
-            it.forEach {
-                buildViews(it.first, it.second)
-            }
+            buildViews(it.first, it.second)
         }
     }
 
