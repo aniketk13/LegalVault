@@ -81,6 +81,7 @@ class MyDocumentsVM : BaseViewModel() {
                 if (response.isSuccessful) {
 //                    updateLoadingModel(LoadingModel.COMPLETED)
                     _updateRequestSuccess.postValue(true)
+                    updateLoadingModel(LoadingModel.COMPLETED)
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
                 }

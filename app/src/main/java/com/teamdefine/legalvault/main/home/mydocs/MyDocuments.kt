@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.FragmentMyDocumentsBinding
+import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.bottomsheet.ContractBottomSheet
 import com.teamdefine.legalvault.main.home.generate.LinkedList
 import com.teamdefine.legalvault.main.home.mydocs.adapter.MyDocsAdapter
@@ -93,11 +94,13 @@ class MyDocuments : Fragment() {
                                 finalDocuments.set(currentList)
                             }
                         }
+                        viewmodel.updateLoadingModel(LoadingModel.LOADING)
                         Handler().postDelayed({
                             if (i == documents.size - 1) {
                                 Timber.i(finalDocuments.get().toString())
                                 setDataInRecycler(finalDocuments.get())
                             }
+                            viewmodel.updateLoadingModel(LoadingModel.COMPLETED)
                         }, 3000)
 
                     }

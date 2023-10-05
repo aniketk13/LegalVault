@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
+import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
@@ -144,6 +145,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun modificationHistory() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
             .addOnCompleteListener {
                 if (it.result.exists()) {
@@ -155,6 +157,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private suspend fun generateHistory(result: Node?) {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         val headNode = result
         val tempHistory: ArrayList<Node> = arrayListOf()
         var finalHistory: Pair<Node, ArrayList<Node>>
@@ -171,6 +174,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             }
         }
         finalHistory = Pair(headNode!!, tempHistory)
+        bottomSheetVM.updateLoadingModel(LoadingModel.COMPLETED)
         withContext(Dispatchers.Main) {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToHistoryFragment(
@@ -181,10 +185,12 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun modifyContract() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         var documentText: String? = ""
         Timber.i("Success with Modifying Contract")
         firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
             .addOnCompleteListener {
+                bottomSheetVM.updateLoadingModel(LoadingModel.COMPLETED)
                 if (it.result.exists()) {
                     documentText = it.result.getString("text")
                     findNavController().navigate(
@@ -200,6 +206,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun signContract() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         Timber.i("Success with Signing Contract")
         var newContent: String? = null
         try {
