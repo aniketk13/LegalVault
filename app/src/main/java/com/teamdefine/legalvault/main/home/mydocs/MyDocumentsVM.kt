@@ -43,7 +43,6 @@ class MyDocumentsVM : BaseViewModel() {
                 updateLoadingModel(LoadingModel.LOADING)
                 val response = RetrofitInstance.api.getSignatureRequests()
                 if (response.isSuccessful) {
-                    updateLoadingModel(LoadingModel.COMPLETED)
                     _myDocs.postValue(response.body())
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)

@@ -94,7 +94,6 @@ class MyDocuments : Fragment() {
                                 finalDocuments.set(currentList)
                             }
                         }
-                        viewmodel.updateLoadingModel(LoadingModel.LOADING)
                         Handler().postDelayed({
                             if (i == documents.size - 1) {
                                 Timber.i(finalDocuments.get().toString())
