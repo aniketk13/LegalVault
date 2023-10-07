@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_homeFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_summaryFragment"
+            app:destination="@id/summaryFragment" />
     </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
@@ -78,5 +81,14 @@
         <argument
             android:name="history"
             app:argType="com.teamdefine.legalvault.main.home.history.MyArgs" />
+    </fragment>
+    <fragment
+        android:id="@+id/summaryFragment"
+        android:name="com.teamdefine.legalvault.main.home.summary.SummaryFragment"
+        android:label="SummaryFragment"
+        tools:layout="@layout/fragment_summary">
+        <argument
+            android:name="summarizedText"
+            app:argType="string" />
     </fragment>
 </navigation>

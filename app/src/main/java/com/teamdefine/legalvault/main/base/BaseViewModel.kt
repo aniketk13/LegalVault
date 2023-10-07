@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 open class BaseViewModel : ViewModel() {
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firestoreInstance = FirebaseFirestore.getInstance()
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val firestoreInstance = FirebaseFirestore.getInstance()
 
     private val _loadingModel: MutableLiveData<LoadingModel> = MutableLiveData()
     val loadingModel: LiveData<LoadingModel>

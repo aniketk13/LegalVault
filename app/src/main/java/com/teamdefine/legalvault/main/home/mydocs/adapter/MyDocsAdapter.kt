@@ -37,23 +37,21 @@ class MyDocsAdapter(
         return ViewHolder(binding)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentSign = signatureList[position]
         holder.apply {
             contractName.text = currentSign.subject
             contractBw.text = when (currentSign.signatures.size) {
                 2 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")} - ${
-                    currentSign.signatures[1]?.signer_name?.substringBefore(
-                        " "
-                    )
+                    currentSign.signatures[1]?.signer_name?.substringBefore(" ")
                 }"
 
                 1 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")}"
                 else -> "Dummy User"
             }
             contractTime.text = Utility.convertTimestampToDateInIST(currentSign.created_at)
-            tamperSeal.visibility = if(currentSign.is_complete) View.VISIBLE else View.GONE
+            tamperSeal.visibility = if (currentSign.is_complete) View.VISIBLE else View.GONE
             options.setOnClickListener {
                 itemClicks.onItemClick(currentSign)
             }

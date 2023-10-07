@@ -1,9 +1,13 @@
 package com.teamdefine.legalvault.main.utility
 
+import android.R
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Environment
 import android.view.View
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
@@ -24,6 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+
 
 object Utility {
     suspend fun createPdfFromTextAsync(
@@ -130,6 +135,16 @@ object Utility {
             return@withContext text
         } catch (e: IOException) {
             throw NetworkException("Error fetching or processing the PDF: ${e.message}")
+        }
+    }
+
+    fun loadImage(context: Context, imageUrl: String, view: ImageView) {
+        try {
+            val options: RequestOptions = RequestOptions()
+                .centerCrop()
+                .error(R.mipmap.sym_def_app_icon)
+            Glide.with(context).load(imageUrl).apply(options).into(view)
+        } catch (e: Exception) {
         }
     }
 }

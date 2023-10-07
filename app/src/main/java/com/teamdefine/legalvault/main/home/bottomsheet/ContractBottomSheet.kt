@@ -108,10 +108,10 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                     signers.indexOfFirst { it?.signer_email_address == firebaseInstance.currentUser?.email }
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
             }
-            previewContract.setOnClickListener {
-//                showPdfViewerBottomSheet()
-                flag = 1
-            }
+//            reviewContract.setOnClickListener {
+////                showPdfViewerBottomSheet()
+////                flag = 1
+////            }p
             modifyContract.setOnClickListener {
 //                val signatureRequestId=signature.signature_request_id
                 flag = 3
@@ -121,11 +121,16 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 flag = 4
                 showBiometricLoginOption()
             }
+            summarizeDoc.setOnClickListener {
+                flag = 5
+                bottomSheetVM.getDocTextFromFirebase(signature.signature_request_id)
+                dismiss()
+            }
         }
     }
 
     private fun showPdfViewerBottomSheet() {
-        PdfViewerBottomSheet.newInstance(pdfUrl = signature.files_url)
+        PdfViewerBottomSheet.newInstance(signatureId = signature.signature_request_id)
             .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
     }
 

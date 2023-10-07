@@ -15,6 +15,8 @@
     <color name="darkblue_app">#002985</color>
     <color name="medium_darkblue_app">#007ac2</color>
     <color name="lightest_blue_app">#EBF7FF</color>
+    <color name="lightest_blue_app2">#3498db</color>
+
 
     <!--  Don't delete it as some of the previous fields are dependent on it-->
     <!-- New Colors -->

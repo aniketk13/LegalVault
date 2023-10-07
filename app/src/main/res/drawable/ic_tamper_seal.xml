@@ -1,0 +1,10 @@
+<svg height="100"
+    viewBox="0 0 100 100"
+    width="100"
+    xmlns="http://www.w3.org/2000/svg">
+    <!-- Ribbon shape -->
+    <path
+        d="M0 20 Q 50 0 100 20 V 80 Q 50 100 0 80 Z"
+        fill="#e74c3c" />
+    <!-- Text on the ribbon -->
+</svg>
