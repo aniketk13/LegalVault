@@ -141,7 +141,9 @@ class ReviewAgreement : Fragment() {
             "status" to "New",
             "documentName" to node.documentName,
             "signers" to node.signers,
-            "date" to node.date
+            "date" to node.date,
+            "hash" to "null",
+            "is_signed" to false
         )
 
         if (args.prevSignatureId != null) {
