@@ -24,35 +24,37 @@
                 android:gravity="center"
                 android:paddingHorizontal="10dp"
                 android:paddingTop="10dp"
-                android:text="Generate Documents, Get Them Biometrically Signed! "
+                android:text="Elevate Your Agreements: Crafting Excellence in 3 Simple Steps "
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/subText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/metropolis_regular"
-                android:gravity="center"
-                android:paddingHorizontal="30dp"
-                android:paddingBottom="6dp"
-                android:text="Elevate Your Agreements: Crafting Excellence in 3 Simple Steps"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/documentGenreationFlow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/introText" />
+            <!--            <androidx.appcompat.widget.AppCompatTextView-->
+            <!--                android:id="@+id/subText"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/metropolis_regular"-->
+            <!--                android:gravity="center"-->
+            <!--                android:paddingHorizontal="30dp"-->
+            <!--                android:paddingBottom="6dp"-->
+            <!--                android:text="Elevate Your Agreements: Crafting Excellence in 3 Simple Steps"-->
+            <!--                android:textSize="12sp"-->
+            <!--                app:layout_constraintBottom_toTopOf="@id/documentGenreationFlow"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/introText" />-->
 
             <include
                 android:id="@+id/documentGenreationFlow"
                 layout="@layout/genereate_doment_flow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/subText" />
+                app:layout_constraintTop_toBottomOf="@id/introText" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

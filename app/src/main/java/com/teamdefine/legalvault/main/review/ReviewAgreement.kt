@@ -1,10 +1,13 @@
 package com.teamdefine.legalvault.main.review
 
 import android.app.ProgressDialog
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,8 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.teamdefine.legalvault.R
-import com.teamdefine.legalvault.databinding.FragmentReviewAgreementBinding
+import com.teamdefine.legalvault.databinding.FragmentReviewNewBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.generate.Node
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
@@ -27,19 +29,18 @@ import timber.log.Timber
 
 class ReviewAgreement : Fragment() {
     private val viewModel: ReviewAgreementViewModel by viewModels()
-    private lateinit var binding: FragmentReviewAgreementBinding
+    private lateinit var binding: FragmentReviewNewBinding
     private lateinit var firebaseInstance: FirebaseAuth
     private lateinit var firestoreInstance: FirebaseFirestore
-    var listOfSigner: List<Signers> = listOf()
-    var publicURL: String = ""
+    private var listOfSigner: ArrayList<Signers> = arrayListOf()
+    private var publicURL: String = ""
     private val args: ReviewAgreementArgs by navArgs()
-    private var signerCount = 0
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentReviewAgreementBinding.inflate(layoutInflater, container, false).also {
+    ): View? = FragmentReviewNewBinding.inflate(layoutInflater, container, false).also {
         binding = it
         firebaseInstance = FirebaseAuth.getInstance()
         firestoreInstance = FirebaseFirestore.getInstance()
@@ -55,9 +56,35 @@ class ReviewAgreement : Fragment() {
     }
 
     private fun initViews() {
+        initEditTextCursor()
         binding.topToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        val focusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                resetCursorPosition(binding.inputName)
+                resetCursorPosition(binding.inputEmail)
+                resetCursorPosition(binding.inputName2)
+                resetCursorPosition(binding.inputEmail2)
+            }
+        }
+
+        binding.inputName.onFocusChangeListener = focusChangeListener
+        binding.inputEmail.onFocusChangeListener = focusChangeListener
+        binding.inputName2.onFocusChangeListener = focusChangeListener
+        binding.inputEmail2.onFocusChangeListener = focusChangeListener
+    }
+
+    private fun initEditTextCursor() {
+        Handler().postDelayed({
+            setCursorAtStartAndShowKeyboard(binding.documentEditText)
+        }, 1000)
+    }
+
+    private fun resetCursorPosition(editText: EditText) {
+        editText.setSelection(0)
+        hideKeyboard(editText)
     }
 
     private fun initObservers() {
@@ -71,6 +98,7 @@ class ReviewAgreement : Fragment() {
                 )
             }
         })
+
         viewModel.publicSavedFileUrl.observe(viewLifecycleOwner, Observer { publicUrlFromDB ->
             publicURL = publicUrlFromDB
             viewModel.sendDocForSignatures(
@@ -79,26 +107,21 @@ class ReviewAgreement : Fragment() {
                     documentTitle = args.documentName,
                     documentSubject = "${args.documentName}-Subject",
                     documentMessage = "${args.documentName}-Message",
-                    documentSigners = listOfSigner as ArrayList<Signers>,
+                    documentSigners = listOfSigner,
                     arrayListOf(publicURL)
                 )
             )
-//            viewModel.getDataFromFirestore()
         })
+
         viewModel.loadingModel.observe(viewLifecycleOwner, Observer {
             when (it) {
                 LoadingModel.LOADING -> progressDialog.showProgressDialog("Finalizing your agreement")
                 else -> if (progressDialog.isShowing) progressDialog.dismiss()
             }
         })
+
         viewModel.docSentForSignatures.observe(viewLifecycleOwner, Observer {
-            var signersName = ""
-            for (i in listOfSigner.indices) {
-                if (i != listOfSigner.size - 1)
-                    signersName += "${listOfSigner[i].signerName},"
-                else
-                    signersName += listOfSigner[i].signerName
-            }
+            val signersName = listOfSigner.joinToString(",") { it.signerName }
             val node = Node(
                 it.signature_request.signature_request_id,
                 null,
@@ -108,24 +131,19 @@ class ReviewAgreement : Fragment() {
                 signersName
             )
             uploadNodeToFirestore(node)
-//            findNavController().popBackStack()
         })
-//        viewModel.firestoreSnapshot.observe(viewLifecycleOwner, Observer {
-//
-//        })
     }
 
     fun uploadNodeToFirestore(node: Node) {
-        // Create a Firestore document for the node
         val nodeDocument = hashMapOf(
-            "value" to node.value
+            "value" to node.value,
+            "text" to node.text,
+            "status" to "New",
+            "documentName" to node.documentName,
+            "signers" to node.signers,
+            "date" to node.date
         )
-        nodeDocument["text"] = node.text
-        nodeDocument["status"] = "New"
-        nodeDocument["documentName"] = node.documentName
 
-        nodeDocument["signers"] = node.signers
-        nodeDocument["date"] = node.date
         if (args.prevSignatureId != null) {
             nodeDocument["nextNodeId"] = args.prevSignatureId!!
             firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
@@ -135,13 +153,10 @@ class ReviewAgreement : Fragment() {
             firestoreInstance.collection("linkedLists").document("${node.value}").set(nodeDocument)
             findNavController().popBackStack()
         }
-
     }
 
     private fun changePrevDocStatus(prevSignatureId: String) {
-        val update = hashMapOf<String, Any>(
-            "status" to "Old"
-        )
+        val update = hashMapOf<String, Any>("status" to "Old")
         firestoreInstance.collection("linkedLists").document(prevSignatureId).update(update)
             .addOnCompleteListener {
                 findNavController().popBackStack()
@@ -149,33 +164,36 @@ class ReviewAgreement : Fragment() {
     }
 
     private fun initClickListeners() {
-        binding.addSignerButton.setOnClickListener {
-            if (signerCount < 2) {
-                signerCount++
-                val cardView = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.signer_container, null)
-                binding.container.addView(cardView)
-            } else {
-                binding.root.showSnackBar("Max signers limit reached")
-            }
-        }
-
         binding.compileContractButton.setOnClickListener {
-            //args.genText = binding.edittext
-            listOfSigner = (1 until binding.container.childCount).map { index ->
-                val signer = binding.container.getChildAt(index)
-                val name = signer.findViewById<EditText>(R.id.inputName)?.text.toString()
-                val email = signer.findViewById<EditText>(R.id.inputEmail)?.text.toString()
-                Signers(name, email, index - 1)
+            val name1 = binding.inputName.text.toString()
+            val email1 = binding.inputEmail.text.toString()
+            val name2 = binding.inputName2.text.toString()
+            val email2 = binding.inputEmail2.text.toString()
+
+            if (name1.isEmpty() || name2.isEmpty() || email1.isEmpty() || email2.isEmpty()) {
+                binding.root.showSnackBar("At least 2 signers are required")
+            } else {
+                listOfSigner.add(Signers(name1, email1, 0))
+                listOfSigner.add(Signers(name2, email2, 1))
+                viewModel.generatePdf(
+                    requireContext(),
+                    binding.documentEditText.text.toString(),
+                    args.documentName,
+                    binding.root
+                )
             }
-//            Timber.i(listOfSigner.toString())
-            viewModel.generatePdf(
-                requireContext(),
-//                args.generatedText,
-                binding.documentEditText.text.toString(),
-                args.documentName,
-                binding.root
-            )
         }
+    }
+
+    private fun setCursorAtStartAndShowKeyboard(editText: EditText) {
+        editText.requestFocus()
+        editText.setSelection(0)
+        val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

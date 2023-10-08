@@ -12,7 +12,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 import com.teamdefine.legalvault.main.home.adapter.HomePageViewPagerAdapter
 import com.teamdefine.legalvault.main.home.generate.GenerateNewDocumentVM
-import com.teamdefine.legalvault.main.utility.Utility
 
 class HomeFragment : Fragment() {
     private val viewModel: GenerateNewDocumentVM by viewModels()
@@ -42,11 +41,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViews() {
-        Utility.loadImage(
-            requireContext(),
-            viewModel.firebaseAuth.currentUser?.photoUrl.toString(),
-            binding.profileImg
-        )
+//        Utility.loadImage(
+//            requireContext(),
+//            viewModel.firebaseAuth.currentUser?.photoUrl.toString(),
+//            binding.profileImg
+//        )
     }
 
     private fun initBackPressListener() {

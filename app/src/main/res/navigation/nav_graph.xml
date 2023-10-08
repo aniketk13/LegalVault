@@ -53,7 +53,7 @@
         android:id="@+id/reviewAgreement"
         android:name="com.teamdefine.legalvault.main.review.ReviewAgreement"
         android:label="ReviewAgreement"
-        tools:layout="@layout/fragment_review_agreement">
+        tools:layout="@layout/fragment_review_new">
         <argument
             android:name="generatedText"
             app:argType="string" />
