@@ -1,14 +1,19 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
-import android.annotation.SuppressLint
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
+import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.teamdefine.legalvault.databinding.LayoutPdfViewerBinding
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
@@ -16,15 +21,17 @@ import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 class PdfViewerBottomSheet : BottomSheetDialogFragment() {
     private val bottomSheetVM: MyDocumentsVM by activityViewModels()
     private lateinit var binding: LayoutPdfViewerBinding
-    private lateinit var pdfUrl: String
+    private lateinit var signatureId: String
+    private var downloadId: Long = 0
+
 
     companion object {
         fun newInstance(
-            pdfUrl: String
+            signatureId: String
         ): PdfViewerBottomSheet {
             val fragment = PdfViewerBottomSheet()
             val args = Bundle().apply {
-                putString("PDF_URL", pdfUrl)
+                putString("SIGNATURE_ID", signatureId)
             }
             fragment.arguments = args
             return fragment
@@ -37,43 +44,77 @@ class PdfViewerBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? = LayoutPdfViewerBinding.inflate(layoutInflater, container, false).also {
         binding = it
-        pdfUrl = arguments?.getString("PDF_URL")!!
+        signatureId = arguments?.getString("SIGNATURE_ID")!!
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        bottomSheetVM.getFile(pdfUrl)
-        loadWebView()
+        initObserser()
+        bottomSheetVM.getFile(signatureId)
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun loadWebView() {
-        binding.apply {
-            loadingModel.progressBar.visibility = View.VISIBLE
-            pdfWebView.settings.javaScriptEnabled = true
+    private fun initObserser() {
+        bottomSheetVM.pdfUrl.observe(viewLifecycleOwner, Observer {
+//            initWebView(it)
+            downloadPdf(it)
+        })
+    }
 
-            // Set up Basic Authentication credentials
-            val username = "9263a4bc250926733b7a066634f918fe44ecd02d08c54d08ccad7c485d05bfdb"
-            val password = ""
-            val authHeader = "Basic " + Base64.encodeToString(
-                "$username:$password".toByteArray(),
-                Base64.NO_WRAP
+    private fun downloadPdf(pdfUrl: String) {
+        val downloadManager =
+            requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+        val request = DownloadManager.Request(Uri.parse(pdfUrl))
+            .setTitle("PDF Download")
+            .setDescription("Downloading PDF")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalPublicDir(
+                "PDFs", // Change this to your desired directory
+                "my_sign_pdf.pdf"
             )
 
-            pdfWebView.webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
+        downloadId = downloadManager.enqueue(request)
 
-                    // Load the URL with Basic Authentication header
-                    view?.loadUrl(pdfUrl, mapOf("Authorization" to authHeader))
+        // Register a BroadcastReceiver to receive download completion
+        val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        requireContext().registerReceiver(downloadReceiver, filter)
+    }
 
-                    loadingModel.progressBar.visibility = View.GONE
-                }
+    private val downloadReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1) == downloadId) {
+                // Download completed
+                openPdf()
             }
-
-            // Load the URL in the WebView
-            pdfWebView.loadUrl(pdfUrl)
         }
     }
 
+    private fun openPdf() {
+        val pdfFile = Uri.parse("file:///storage/emulated/0/PDFs/my_sign_pdf.pdf")
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(pdfFile, "application/pdf")
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            // Handle exceptions (e.g., PDF viewer not found)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireContext().unregisterReceiver(downloadReceiver)
+    }
+
+    private fun initWebView(fileUrl: String?) {
+        fileUrl?.let {
+            binding.pdfWebView.apply {
+                settings.javaScriptEnabled = true
+                webViewClient = WebViewClient()
+                webChromeClient = WebChromeClient()
+                loadUrl(it)
+            }
+        }
+    }
 }

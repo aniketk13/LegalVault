@@ -64,7 +64,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <include
         android:id="@+id/loadingModel"
         layout="@layout/common_loading_model"

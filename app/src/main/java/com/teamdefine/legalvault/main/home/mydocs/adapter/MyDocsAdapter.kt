@@ -2,6 +2,7 @@ package com.teamdefine.legalvault.main.home.mydocs.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdefine.legalvault.databinding.ItemSignRequestsBinding
@@ -24,6 +25,7 @@ class MyDocsAdapter(
         val contractBw = binding.contractBwTv
         val contractTime = binding.contractDateTv
         val options = binding.optionsIv
+        val tamperSeal = binding.tamperSeal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,22 +37,21 @@ class MyDocsAdapter(
         return ViewHolder(binding)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentSign = signatureList[position]
         holder.apply {
             contractName.text = currentSign.subject
             contractBw.text = when (currentSign.signatures.size) {
                 2 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")} - ${
-                    currentSign.signatures[1]?.signer_name?.substringBefore(
-                        " "
-                    )
+                    currentSign.signatures[1]?.signer_name?.substringBefore(" ")
                 }"
 
                 1 -> "${currentSign.signatures[0]?.signer_name?.substringBefore(" ")}"
                 else -> "Dummy User"
             }
             contractTime.text = Utility.convertTimestampToDateInIST(currentSign.created_at)
+            tamperSeal.visibility = if (currentSign.is_complete) View.VISIBLE else View.GONE
             options.setOnClickListener {
                 itemClicks.onItemClick(currentSign)
             }

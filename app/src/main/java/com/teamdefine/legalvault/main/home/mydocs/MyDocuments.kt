@@ -7,16 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.FragmentMyDocumentsBinding
+import com.teamdefine.legalvault.main.base.LoadingModel
+import com.teamdefine.legalvault.main.home.HomeFragmentDirections
 import com.teamdefine.legalvault.main.home.bottomsheet.ContractBottomSheet
+import com.teamdefine.legalvault.main.home.generate.GenerateNewDocumentVM
 import com.teamdefine.legalvault.main.home.generate.LinkedList
 import com.teamdefine.legalvault.main.home.mydocs.adapter.MyDocsAdapter
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.CONSTANTS
+import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicReference
@@ -27,6 +33,7 @@ class MyDocuments : Fragment() {
     lateinit var adapter: MyDocsAdapter
     private lateinit var firebaseFirestore: FirebaseFirestore
     private val viewmodel: MyDocumentsVM by activityViewModels()
+    private val contractGenVM: GenerateNewDocumentVM by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +105,7 @@ class MyDocuments : Fragment() {
                                 Timber.i(finalDocuments.get().toString())
                                 setDataInRecycler(finalDocuments.get())
                             }
+                            viewmodel.updateLoadingModel(LoadingModel.COMPLETED)
                         }, 3000)
 
                     }
@@ -112,6 +120,25 @@ class MyDocuments : Fragment() {
         viewmodel.loadingModel.observe(viewLifecycleOwner, Observer {
             binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         })
+
+        viewmodel.docText.observe(viewLifecycleOwner, EventObserver {
+            summarizeUtility(it)
+        })
+        viewmodel.gptResponseSummary.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToSummaryFragment(
+                    it.results[0].generated_text
+                )
+            )
+        })
+    }
+
+    private fun summarizeUtility(docText: String?) {
+        docText?.let {
+            val promptToSend =
+                "Summarize this text in under 50 words. The text is: $docText. Make it crisp"
+            viewmodel.summarizeDoc(promptToSend)
+        }
     }
 
     fun uploadLinkedListToFirestore(linkedList: LinkedList) {

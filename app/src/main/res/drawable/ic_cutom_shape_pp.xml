@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- You can use gradient with below attributes-->
+    <gradient
+        android:angle="90"
+        android:centerColor="#555994"
+        android:endColor="#b5b6d2"
+        android:startColor="#555994"
+        android:type="linear" />
+
+    <!-- You can omit below tag if you don't need stroke -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/darkblue_app" />
+
+    <!-- Set the same value for both width and height to get a circular shape -->
+    <size
+        android:width="200dp"
+        android:height="200dp" />
+
+
+    <!--if you need only a single color filled shape-->
+    <solid android:color="#e42828" />
+
+
+</shape>

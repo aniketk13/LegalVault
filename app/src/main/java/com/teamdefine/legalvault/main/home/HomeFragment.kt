@@ -36,7 +36,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         initBackPressListener()
+    }
+
+    private fun initViews() {
+//        Utility.loadImage(
+//            requireContext(),
+//            viewModel.firebaseAuth.currentUser?.photoUrl.toString(),
+//            binding.profileImg
+//        )
     }
 
     private fun initBackPressListener() {

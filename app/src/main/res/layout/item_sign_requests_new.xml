@@ -24,7 +24,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:backgroundTint="@color/activityCardColor"
+        android:backgroundTint="@color/lightest_blue_app"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,14 +94,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_options"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tamperSeal"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/tamper_seal"
                 app:layout_constraintBottom_toBottomOf="parent"

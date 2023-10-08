@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metropolis_medium"
                     android:paddingHorizontal="5dp"
-                    android:text="Describe your document"
+                    android:text="Describe and generate smart contract"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/genAi"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metropolis_medium"
                     android:paddingHorizontal="5dp"
-                    android:text="Get generated doc signed"
+                    android:text="Sign biometrically and Decentralize them "
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/signDoc"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metropolis_medium"
                     android:paddingHorizontal="5dp"
-                    android:text="Make it legally binded"
+                    android:text="Get tamper proof seal attached"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/getVeri"
                     app:layout_constraintTop_toTopOf="parent" />

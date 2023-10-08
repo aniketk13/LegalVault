@@ -4,12 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.teamdefine.legalvault.api.RetrofitInstance
+import com.teamdefine.legalvault.api.RetrofitInstance2
 import com.teamdefine.legalvault.api.RetrofitInstance3
 import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
+import com.teamdefine.legalvault.main.home.model.GptRequestModel
+import com.teamdefine.legalvault.main.home.model.GptResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
+import com.teamdefine.legalvault.main.utility.event.Event
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -37,13 +41,25 @@ class MyDocumentsVM : BaseViewModel() {
     val pageDeployedSuccess: LiveData<Boolean>
         get() = _pageDeployedSuccess
 
+    private val _pdfUrl: MutableLiveData<String> =
+        MutableLiveData()
+    val pdfUrl: LiveData<String>
+        get() = _pdfUrl
+
+    private val _docText: MutableLiveData<Event<String>> = MutableLiveData()
+    val docText: LiveData<Event<String>>
+        get() = _docText
+
+    private val _gptResponseSummary: MutableLiveData<Event<GptResponseModel>> = MutableLiveData()
+    val gptResponseSummary: LiveData<Event<GptResponseModel>>
+        get() = _gptResponseSummary
+
     fun getAllDocs() {
         viewModelScope.launch {
             try {
                 updateLoadingModel(LoadingModel.LOADING)
                 val response = RetrofitInstance.api.getSignatureRequests()
                 if (response.isSuccessful) {
-                    updateLoadingModel(LoadingModel.COMPLETED)
                     _myDocs.postValue(response.body())
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
@@ -52,6 +68,47 @@ class MyDocumentsVM : BaseViewModel() {
                 updateLoadingModel(LoadingModel.ERROR)
                 Timber.e(e.message.toString())
             }
+        }
+    }
+
+    fun summarizeDoc(prompt: String) {
+        val body = GptRequestModel(prompt)
+        try {
+            updateLoadingModel(LoadingModel.LOADING)
+            viewModelScope.launch {
+                val response = RetrofitInstance2.gptApi.getAgreement(body)
+                if (response.isSuccessful) {
+                    _gptResponseSummary.postValue(Event(response.body()!!))
+                    updateLoadingModel(LoadingModel.COMPLETED)
+                } else {
+                    updateLoadingModel(LoadingModel.ERROR)
+                }
+            }
+        } catch (e: Exception) {
+            updateLoadingModel(LoadingModel.ERROR)
+            Timber.e(e.message.toString())
+        }
+    }
+
+    fun getDocTextFromFirebase(signatureId: String) {
+        try {
+            updateLoadingModel(LoadingModel.LOADING)
+            firestoreInstance.collection("linkedLists").document(signatureId).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val request = documentSnapshot.getString("text")
+                        request?.let {
+                            _docText.postValue(Event(it))
+                        }
+                    }
+                    updateLoadingModel(LoadingModel.COMPLETED)
+                }
+                .addOnFailureListener { e ->
+                    updateLoadingModel(LoadingModel.ERROR)
+                    Timber.e("Error getting document: $e")
+                }
+        } catch (e: Exception) {
+            updateLoadingModel(LoadingModel.ERROR)
         }
     }
 
@@ -81,6 +138,7 @@ class MyDocumentsVM : BaseViewModel() {
                 if (response.isSuccessful) {
 //                    updateLoadingModel(LoadingModel.COMPLETED)
                     _updateRequestSuccess.postValue(true)
+                    updateLoadingModel(LoadingModel.COMPLETED)
                 } else {
                     updateLoadingModel(LoadingModel.ERROR)
                 }
@@ -141,11 +199,13 @@ class MyDocumentsVM : BaseViewModel() {
         }
     }
 
-    fun getFile(url: String) {
+    fun getFile(signatureId: String) {
         viewModelScope.launch {
             try {
-                val response =
-                    RetrofitInstance.api.getFile("f21b80540fd259403e2dc9963e5a97be62f94024")
+                val response = RetrofitInstance.api.getFile(signatureId)
+                if (response.isSuccessful) {
+                    _pdfUrl.postValue(response.body()?.file_url)
+                }
             } catch (e: Exception) {
                 Timber.e(e.message.toString())
             }

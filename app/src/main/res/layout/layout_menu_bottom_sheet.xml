@@ -24,20 +24,20 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Contract Name" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/previewContract"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:drawableStart="@drawable/ic_preview"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/metropolis_medium"
-            android:padding="15dp"
-            android:paddingStart="20dp"
-            android:text="Preview Contract"
-            android:textSize="13sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contractName" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/previewContract"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:drawableStart="@drawable/ic_preview"-->
+        <!--            android:drawablePadding="10dp"-->
+        <!--            android:fontFamily="@font/metropolis_medium"-->
+        <!--            android:padding="15dp"-->
+        <!--            android:paddingStart="20dp"-->
+        <!--            android:text="Preview Contract"-->
+        <!--            android:textSize="13sp"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/contractName" />-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/signContract"
@@ -51,7 +51,7 @@
             android:text="Sign Contract"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/previewContract" />
+            app:layout_constraintTop_toBottomOf="@id/contractName" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/modifyContract"
@@ -80,6 +80,20 @@
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/modifyContract" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/summarizeDoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_summary"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/metropolis_medium"
+            android:padding="15dp"
+            android:paddingStart="20dp"
+            android:text="Summarize Doucument"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modificationHistory" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

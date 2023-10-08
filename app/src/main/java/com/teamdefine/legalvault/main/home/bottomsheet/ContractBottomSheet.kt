@@ -1,6 +1,5 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teamdefine.legalvault.databinding.LayoutMenuBottomSheetBinding
+import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.BiometricAuthListener
 import com.teamdefine.legalvault.main.home.HomeFragmentDirections
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
@@ -37,11 +37,8 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private lateinit var firebaseFirestore: FirebaseFirestore
     private var flag: Int = 0
 
-
     companion object {
-        fun newInstance(
-            signature: SignatureRequest
-        ): ContractBottomSheet {
+        fun newInstance(signature: SignatureRequest): ContractBottomSheet {
             val fragment = ContractBottomSheet()
             val args = Bundle().apply {
                 putParcelable("SIGNATURE", signature)
@@ -86,9 +83,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
         bottomSheetVM.pageDeployedSuccess.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Timber.i("Page Deployed Successfully")
-//                val url = "https://aniketk13.github.io/testing/"
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                startActivity(intent)
+                dismiss()
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTest())
             }
         })
@@ -107,12 +102,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                     signers.indexOfFirst { it?.signer_email_address == firebaseInstance.currentUser?.email }
                 signers[filter]?.let { it1 -> bottomSheetVM.getDocSignUrl(it1.signature_id) }
             }
-            previewContract.setOnClickListener {
-//                showPdfViewerBottomSheet()
-                flag = 1
-            }
             modifyContract.setOnClickListener {
-//                val signatureRequestId=signature.signature_request_id
                 flag = 3
                 showBiometricLoginOption()
             }
@@ -120,11 +110,16 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 flag = 4
                 showBiometricLoginOption()
             }
+            summarizeDoc.setOnClickListener {
+                flag = 5
+                bottomSheetVM.getDocTextFromFirebase(signature.signature_request_id)
+                dismiss()
+            }
         }
     }
 
     private fun showPdfViewerBottomSheet() {
-        PdfViewerBottomSheet.newInstance(pdfUrl = signature.files_url)
+        PdfViewerBottomSheet.newInstance(signatureId = signature.signature_request_id)
             .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
     }
 
@@ -144,6 +139,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun modificationHistory() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
             .addOnCompleteListener {
                 if (it.result.exists()) {
@@ -155,11 +151,11 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private suspend fun generateHistory(result: Node?) {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         val headNode = result
         val tempHistory: ArrayList<Node> = arrayListOf()
         var finalHistory: Pair<Node, ArrayList<Node>>
         var nextNodeId: Any? = result?.nextNodeId
-//        finalHistory.add(result?.getString("value"))
         while (nextNodeId != null) {
             val it =
                 firebaseFirestore.collection("linkedLists").document(nextNodeId.toString()).get()
@@ -171,6 +167,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             }
         }
         finalHistory = Pair(headNode!!, tempHistory)
+        bottomSheetVM.updateLoadingModel(LoadingModel.COMPLETED)
         withContext(Dispatchers.Main) {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToHistoryFragment(
@@ -178,13 +175,16 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 )
             )
         }
+        dismiss()
     }
 
     private fun modifyContract() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         var documentText: String? = ""
         Timber.i("Success with Modifying Contract")
         firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
             .addOnCompleteListener {
+                bottomSheetVM.updateLoadingModel(LoadingModel.COMPLETED)
                 if (it.result.exists()) {
                     documentText = it.result.getString("text")
                     findNavController().navigate(
@@ -200,6 +200,7 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun signContract() {
+        bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         Timber.i("Success with Signing Contract")
         var newContent: String? = null
         try {
@@ -221,10 +222,3 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     override fun onBiometricAuthenticationError(errorCode: Int, errorMessage: String) {
     }
 }
-
-//4->3->2->1
-//pair(4,{3,2,1})
-//{pair(4,{3,2,1}),pair(3,{2,1}),pair(2,{1})}
-
-//8->7->6->5
-//pair(8,{7,6,5})

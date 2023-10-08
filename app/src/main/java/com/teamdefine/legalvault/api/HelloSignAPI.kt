@@ -1,5 +1,6 @@
 package com.teamdefine.legalvault.api
 
+import com.teamdefine.legalvault.main.home.mydocs.models.DownloadResponse
 import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
 import com.teamdefine.legalvault.main.onboarding.model.ApiAppRequestModel
@@ -28,8 +29,8 @@ interface HelloSignAPI {
     @GET("v3/embedded/sign_url/{signature_id}")
     suspend fun getSigningUrl(@Path("signature_id") signature_id: String): Response<SignUrlResponseModel>
 
-    @GET("v3/signature_request/files/{files_url}")
-    suspend fun getFile(@Path("files_url") fileUrl: String): Response<Unit>
+    @GET("v3/signature_request/files/{signature_id}?get_url=true")
+    suspend fun getFile(@Path("signature_id") signatureId: String): Response<DownloadResponse>
 
 
 }
