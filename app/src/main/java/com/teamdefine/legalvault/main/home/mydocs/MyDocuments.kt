@@ -81,12 +81,14 @@ class MyDocuments : Fragment() {
         if (binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
         if (filteredList.isEmpty())
             binding.noSignLayout.noSignIv.visibility = View.VISIBLE
-        else{
+        else {
             adapter.setData(filteredList)
             filteredList.forEach {
-                Handler().postDelayed({
-                    viewmodel.getFile(it.signature_request_id)
-                }, 2000)
+                if (it.is_complete) {
+                    Handler().postDelayed({
+                        viewmodel.getFile(it.signature_request_id)
+                    }, 2000)
+                }
             }
         }
     }
