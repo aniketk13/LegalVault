@@ -31,6 +31,4 @@ interface HelloSignAPI {
 
     @GET("v3/signature_request/files/{signature_id}?get_url=true")
     suspend fun getFile(@Path("signature_id") signatureId: String): Response<DownloadResponse>
-
-
 }

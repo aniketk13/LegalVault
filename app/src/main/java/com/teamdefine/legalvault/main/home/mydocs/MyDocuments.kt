@@ -34,6 +34,8 @@ class MyDocuments : Fragment() {
     private lateinit var firebaseFirestore: FirebaseFirestore
     private val viewmodel: MyDocumentsVM by activityViewModels()
     private val contractGenVM: GenerateNewDocumentVM by viewModels()
+    private val listOfUrls: ArrayList<String> = arrayListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,11 +81,21 @@ class MyDocuments : Fragment() {
         if (binding.swipeRefresh.isRefreshing) binding.swipeRefresh.isRefreshing = false
         if (filteredList.isEmpty())
             binding.noSignLayout.noSignIv.visibility = View.VISIBLE
-        else
+        else{
             adapter.setData(filteredList)
+            filteredList.forEach {
+                Handler().postDelayed({
+                    viewmodel.getFile(it.signature_request_id)
+                }, 2000)
+            }
+        }
     }
 
     private fun initObservers() {
+        viewmodel.pdfUrl.observe(viewLifecycleOwner, Observer {
+            listOfUrls.add(it)
+        })
+
         viewmodel.myDocs.observe(viewLifecycleOwner, Observer {
             val documents =
                 it.signature_requests.filter { it.client_id == CONSTANTS.CLIENT_ID } as ArrayList<SignatureRequest>

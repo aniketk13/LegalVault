@@ -24,7 +24,6 @@ class PdfViewerBottomSheet : BottomSheetDialogFragment() {
     private lateinit var signatureId: String
     private var downloadId: Long = 0
 
-
     companion object {
         fun newInstance(
             signatureId: String
@@ -54,10 +53,6 @@ class PdfViewerBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun initObserser() {
-        bottomSheetVM.pdfUrl.observe(viewLifecycleOwner, Observer {
-//            initWebView(it)
-            downloadPdf(it)
-        })
     }
 
     private fun downloadPdf(pdfUrl: String) {
