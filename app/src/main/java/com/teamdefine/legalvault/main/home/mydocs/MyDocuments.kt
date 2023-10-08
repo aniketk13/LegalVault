@@ -121,7 +121,7 @@ class MyDocuments : Fragment() {
             binding.loadingModel.progressBar.setVisibilityBasedOnLoadingModel(it)
         })
 
-        viewmodel.docText.observe(viewLifecycleOwner, Observer {
+        viewmodel.docText.observe(viewLifecycleOwner, EventObserver {
             summarizeUtility(it)
         })
         viewmodel.gptResponseSummary.observe(viewLifecycleOwner, EventObserver {

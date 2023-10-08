@@ -46,8 +46,8 @@ class MyDocumentsVM : BaseViewModel() {
     val pdfUrl: LiveData<String>
         get() = _pdfUrl
 
-    private val _docText: MutableLiveData<String> = MutableLiveData()
-    val docText: LiveData<String>
+    private val _docText: MutableLiveData<Event<String>> = MutableLiveData()
+    val docText: LiveData<Event<String>>
         get() = _docText
 
     private val _gptResponseSummary: MutableLiveData<Event<GptResponseModel>> = MutableLiveData()
@@ -98,7 +98,7 @@ class MyDocumentsVM : BaseViewModel() {
                     if (documentSnapshot.exists()) {
                         val request = documentSnapshot.getString("text")
                         request?.let {
-                            _docText.postValue(it)
+                            _docText.postValue(Event(it))
                         }
                     }
                     updateLoadingModel(LoadingModel.COMPLETED)
