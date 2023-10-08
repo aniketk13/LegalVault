@@ -46,6 +46,10 @@ class HistoryFragment : Fragment() {
                 Timber.e(e.message.toString())
             }
         }
+        binding.lastUpdated.text = "Last Updated On: ${historyDoc.nodePair.first.date}"
+        binding.totalRequests.text = (1 + historyDoc.nodePair.second.size).toString()
+        binding.signReqYouSent.text =
+            "Modifications Done On: ${historyDoc.nodePair.second.lastOrNull()?.documentName}"
     }
 
     private fun setDataInEpoxy() {
