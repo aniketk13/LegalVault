@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit
 private const val BASE_URL = "https://api.hellosign.com/"
 private const val BASE_URL2 = "https://api.deepinfra.com/"
 private const val BASE_URL3 = "https://api.github.com/"
+private const val BASE_URL4 = "https://ipfs.infura.io:5001/"
+
 
 object RetrofitInstance {
     //interceptors
@@ -67,5 +69,19 @@ object RetrofitInstance3 {
     }
     val githubAPI: GitHubAPI by lazy {
         retrofit3.create(GitHubAPI::class.java)
+    }
+}
+
+object RetrofitInstance4 {
+    var loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    var clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder().addInterceptor(
+        loggingInterceptor
+    )
+    private val retrofit4 by lazy {
+        Retrofit.Builder().baseUrl(BASE_URL4).client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create()).build()
+    }
+    val infuraAPI: InfuraAPI by lazy {
+        retrofit4.create(InfuraAPI::class.java)
     }
 }
