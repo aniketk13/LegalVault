@@ -24,7 +24,15 @@ import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.CONSTANTS
 import com.teamdefine.legalvault.main.utility.event.EventObserver
 import com.teamdefine.legalvault.main.utility.extensions.setVisibilityBasedOnLoadingModel
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.concurrent.atomic.AtomicReference
 
 class MyDocuments : Fragment() {
@@ -35,6 +43,7 @@ class MyDocuments : Fragment() {
     private val viewmodel: MyDocumentsVM by activityViewModels()
     private val contractGenVM: GenerateNewDocumentVM by viewModels()
     private val listOfUrls: ArrayList<String> = arrayListOf()
+    private lateinit var requestUrls: ArrayList<Pair<String, String>>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,19 +92,70 @@ class MyDocuments : Fragment() {
             binding.noSignLayout.noSignIv.visibility = View.VISIBLE
         else {
             adapter.setData(filteredList)
-            filteredList.forEach {
-                if (it.is_complete) {
-                    Handler().postDelayed({
-                        viewmodel.getFile(it.signature_request_id)
-                    }, 2000)
+            filteredList.forEach { request ->
+                if (request.is_complete) {
+                    firebaseFirestore.collection("linkedLists")
+                        .document(request.signature_request_id).get().addOnCompleteListener {
+                        if (it.result.exists()) {
+                            val hash = it.result.getString("hash")
+                            if (hash.equals("null")) {
+                                viewmodel.getFile(request.signature_request_id)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
+    private fun getFilePath(url: String, signatureId: String) {
+        val tempFile = File(requireContext().cacheDir, "temp_file")
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val inputStream = response.body?.byteStream()
+                    val outputStream = FileOutputStream(tempFile)
+                    val buffer = ByteArray(1024)
+                    var bytesRead: Int
+                    while (inputStream?.read(buffer).also { bytesRead = it!! } != -1) {
+                        Timber.i("happening")
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                    uploadDocument(tempFile.absolutePath, signatureId)
+                    outputStream.close()
+                    inputStream?.close()
+
+                } else {
+                    // Handle the error
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+        })
+    }
+
+    private fun uploadDocument(filePath: String, signatureId: String) {
+        viewmodel.uploadDocumentToInfura(filePath, signatureId)
+    }
+
     private fun initObservers() {
+        viewmodel.infuraAddResponse.observe(viewLifecycleOwner, Observer { pair ->
+            //we need signature id here
+            val update = hashMapOf<String, Any>("hash" to pair.first.Hash)
+            update["is_signed"] = true
+            firebaseFirestore.collection("linkedLists").document(pair.second).update(update)
+                .addOnCompleteListener {
+                    Timber.i("hash value updated successfully")
+                }
+        })
         viewmodel.pdfUrl.observe(viewLifecycleOwner, Observer {
-            listOfUrls.add(it)
+            getFilePath(it.first, it.second)
         })
 
         viewmodel.myDocs.observe(viewLifecycleOwner, Observer {

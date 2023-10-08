@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.teamdefine.legalvault.api.RetrofitInstance
 import com.teamdefine.legalvault.api.RetrofitInstance2
 import com.teamdefine.legalvault.api.RetrofitInstance3
+import com.teamdefine.legalvault.api.RetrofitInstance4
 import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
+import com.teamdefine.legalvault.main.home.generate.InfuraAddResponse
 import com.teamdefine.legalvault.main.home.model.GptRequestModel
 import com.teamdefine.legalvault.main.home.model.GptResponseModel
 import com.teamdefine.legalvault.main.home.mydocs.models.MyDocsResponseModel
@@ -16,7 +18,11 @@ import com.teamdefine.legalvault.main.home.mydocs.models.SignUrlResponseModel
 import com.teamdefine.legalvault.main.utility.event.Event
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
+import java.io.File
 
 class MyDocumentsVM : BaseViewModel() {
     private val _myDocs: MutableLiveData<MyDocsResponseModel> = MutableLiveData()
@@ -41,9 +47,9 @@ class MyDocumentsVM : BaseViewModel() {
     val pageDeployedSuccess: LiveData<Boolean>
         get() = _pageDeployedSuccess
 
-    private val _pdfUrl: MutableLiveData<String> =
+    private val _pdfUrl: MutableLiveData<Pair<String, String>> =
         MutableLiveData()
-    val pdfUrl: LiveData<String>
+    val pdfUrl: LiveData<Pair<String, String>>
         get() = _pdfUrl
 
     private val _docText: MutableLiveData<Event<String>> = MutableLiveData()
@@ -53,6 +59,11 @@ class MyDocumentsVM : BaseViewModel() {
     private val _gptResponseSummary: MutableLiveData<Event<GptResponseModel>> = MutableLiveData()
     val gptResponseSummary: LiveData<Event<GptResponseModel>>
         get() = _gptResponseSummary
+
+    private val _infuraAddResponse: MutableLiveData<Pair<InfuraAddResponse, String>> =
+        MutableLiveData()
+    val infuraAddResponse: LiveData<Pair<InfuraAddResponse, String>>
+        get() = _infuraAddResponse
 
     fun getAllDocs() {
         viewModelScope.launch {
@@ -204,11 +215,27 @@ class MyDocumentsVM : BaseViewModel() {
             try {
                 val response = RetrofitInstance.api.getFile(signatureId)
                 if (response.isSuccessful) {
-                    _pdfUrl.postValue(response.body()?.file_url)
+                    _pdfUrl.postValue(Pair(response.body()?.file_url!!, signatureId))
                 }
             } catch (e: Exception) {
                 Timber.e(e.message.toString())
             }
+        }
+    }
+
+    fun uploadDocumentToInfura(docPath: String, signatureId: String) {
+        try {
+            viewModelScope.launch {
+                val fileToUpload = File(docPath)
+                val requestBody =
+                    RequestBody.create("application/octet-stream".toMediaType(), fileToUpload)
+                val filePart =
+                    MultipartBody.Part.createFormData("file", fileToUpload.name, requestBody)
+                val response = RetrofitInstance4.infuraAPI.addDocumentToInfura(filePart)
+                _infuraAddResponse.postValue(Pair(response, signatureId))
+            }
+        } catch (e: Exception) {
+            Timber.e(e.message)
         }
     }
 }

@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.teamdefine.legalvault.databinding.LayoutPdfViewerBinding
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
