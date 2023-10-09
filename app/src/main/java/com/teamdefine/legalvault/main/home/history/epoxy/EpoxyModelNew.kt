@@ -19,9 +19,13 @@ abstract class EpoxyModelNew : DataBindingEpoxyModel() {
     @EpoxyAttribute
     var date: String = ""
 
+    @EpoxyAttribute
+    var tamperProof: Boolean? = false
+
     override fun setDataBindingVariables(binding: ViewDataBinding) {
         binding.setVariable(BR.agreementName, agreementTitle)
         binding.setVariable(BR.partiesName, agreementBetween)
         binding.setVariable(BR.date, date)
+        binding.setVariable(BR.tamperProof, tamperProof)
     }
 }
