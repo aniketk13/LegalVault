@@ -91,11 +91,12 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
 
     private fun initViews() {
         binding.contractName.text = signature.subject
+        binding.previewDoc.visibility = if (signature.is_complete) View.VISIBLE else View.GONE
     }
 
     private fun initClickListeners() {
         binding.apply {
-            this.signContract.setOnClickListener {
+            signContract.setOnClickListener {
                 flag = 2
                 val signers = signature.signatures
                 val filter =
@@ -113,6 +114,11 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             summarizeDoc.setOnClickListener {
                 flag = 5
                 bottomSheetVM.getDocTextFromFirebase(signature.signature_request_id)
+                dismiss()
+            }
+            previewDoc.setOnClickListener {
+                flag = 6
+                showPdfViewerBottomSheet()
                 dismiss()
             }
         }

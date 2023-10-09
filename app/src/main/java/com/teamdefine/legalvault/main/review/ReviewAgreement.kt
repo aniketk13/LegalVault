@@ -94,9 +94,9 @@ class ReviewAgreement : Fragment() {
                 val update = hashMapOf<String, Any>("hash" to "null")
                 firestoreInstance.collection("linkedLists").document(args.prevSignatureId!!)
                     .update(update).addOnCompleteListener {
-                    Timber.i("Hash removed from firestore")
-                    findNavController().popBackStack()
-                }
+                        Timber.i("Hash removed from firestore")
+                        findNavController().popBackStack()
+                    }
             }
         })
 
