@@ -22,25 +22,6 @@ Access your signed documents with ease, all while maintaining the highest level 
 - 📜 Revision History:
 Track every change made to your documents with our comprehensive modification history. Gain insight into every edit and maintain full control over your content.
 
-## 💡Inspiration:
-
-- College Hostels are one of those authorities that still adhere to the old-fashioned Pass Book system,
-  requiring students to maintain track of the type of Leaves and Applications they are requesting in
-  their respective Passbooks. The students are also required to draft the application and get those
-  signed manually in the Passbooks by the respective authority member in order to get approval.
-- This traditional process of getting the Leaves/ Applications signed manually has a lot of drawbacks,
-  which includes:
-  1. Hassle for the student to Write and Get the Applications signed manually.
-  2. In the case of Application For Night Pass, the student has to get the application approved both by the 
-     Hostel's Warden and Parent/ Guardian, which increases the time for getting the approval.
-  3. If a large number of Applications are received by the Hostel's Warden, it becomes difficult for
-     them to Manage, Review and Sign the Applications.
-- Keeping all these issues in mind, we came up with the concept to Digitalize this approach by building
-  Sign Ease, an Android application that has integrated APIs by **Hello Sign** and assists the students 
-  in getting their Leaves and Applications signed Digitally by the respective Authority Member. Also, it 
-  helps the Wardens/ Authority Members to keep track of all the applications that they've signed.
-
-
 ## 💬 What it does:
 
 - 📊 Streamlined Document Generation: Upon launching the app, users harness the power of AI to effortlessly craft legally sound documents. Define your prompt in concise phrases, and watch as the application generates intricate legal documents with unparalleled precision.
@@ -68,26 +49,21 @@ Track every change made to your documents with our comprehensive modification hi
 
 ## ❗Challenges we ran into:
 
-- As our placement season is going on, managing exams + interviews along with the project.
-- Integration of blockchain and IPFS for storing and managing tamper-sealed files.
-- Enabling IFrame for embedded signing led to use GitHub pages.
+- As our college placement season is going on, managing exams + interviews along with the project was a tedious task.
+- Integration of blockchain and IPFS for storing and managing tamper-sealed files led us to invest 3-4 days in exploring blockchain.
+- Enabling IFrame for embedded signing caused a crash on Android Webview, so integrated GitHub pages for deploying the JS with HTML, then generating a link for signing docs.
 
 ## 🏆 Accomplishments that we're proud of:
-- Eliminating the Manual Job for both Students and Authorities to get their Docs signed.
-- Implemented Bottom Sheets and WebView successfully.
+- Incorporated Smart Contracts, Blockchain, Biometric Signatures and Authentications.
 - Segregated different blocks of code and efficiently handled its operation, thus following a clean code architecture (MVVM).
 
 ## 📙 What we learned:
-- Usage and working of Hello-Sign APIs and how they benefit society.
-- Learned using NavGraphs and Logging Interceptor for Networking Calls.
-- Improved our Application Architecture by writing more Efficient Code.
+- How to manage time, be efficient, and handle multiple tasks at multiple times.
+- Usage and working of Dropbox-Sign APIs and how they benefit society.
+- Incorporation of Blockchain, Tamper Seals, and GitHub Actions Pipelines for respective tasks in app.
 
 ## ❓ What's next for Sign Ease
-
-1. Able to embed logs of Leaves and the Applications on the identity cards of students.
-2. Adding more Templates and Signers across the spectrum of a College.
-3. Build a cross-platform service that can work on multiple Operating Systems.
-4. Build another Portal for the Authorities to sign the documents then and there instead of
-   opening the e-mails again and again. All by keeping **Hello Sign** as the backbone.
+- Able to add propts using Audio.
+- Getting notifications if the documents are not signed yet.
+- Usage of NFC for signing contracts.
    
-##
