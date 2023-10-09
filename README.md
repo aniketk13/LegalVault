@@ -46,7 +46,7 @@ Track every change made to your documents with our comprehensive modification hi
 
 ## 🛠 How we built it
 
-- Dropbox Sign, Kotlin (MVVM, NavGraphs, Coroutines, Retrofit, Koin, Clean Architecture), XML, Postman, Firebase (Authentication, Firestore, Storage, Crashlytics, Analytics), APIs, Figma.
+- Dropbox Sign, Kotlin (MVVM, NavGraphs, Coroutines, Retrofit, Koin, Clean Architecture), XML, Postman, Firebase (Authentication, Firestore, Storage, Crashlytics, Analytics), APIs, Figma, IPFS, Infura, Blockchain, Biometrics.
 
 ## ❗Challenges we ran into:
 
