@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.teamdefine.legalvault.api.RetrofitInstance
+import com.teamdefine.legalvault.api.RetrofitInstance4
 import com.teamdefine.legalvault.main.base.BaseViewModel
 import com.teamdefine.legalvault.main.base.LoadingModel
 import com.teamdefine.legalvault.main.review.model.EmbeddedSignRequestModel
@@ -38,6 +39,11 @@ class ReviewAgreementViewModel : BaseViewModel(), KoinComponent {
         MutableLiveData()
     val docSentForSignatures: LiveData<EmbeddedSignResponseModel>
         get() = _docSentForSignatures
+
+    private val _infuraDocDeleted: MutableLiveData<Boolean> =
+        MutableLiveData(false)
+    val infuraDocDeleted: LiveData<Boolean>
+        get() = _infuraDocDeleted
 
     fun generatePdf(context: Context, generatedText: String, fileName: String, view: View) {
         viewModelScope.launch {
@@ -97,6 +103,19 @@ class ReviewAgreementViewModel : BaseViewModel(), KoinComponent {
             } catch (e: Exception) {
                 updateLoadingModel(LoadingModel.LOADING)
                 Timber.e(e.message.toString())
+            }
+        }
+    }
+
+    fun removeDocumentFromInfura(prevDocHash: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitInstance4.infuraAPI.removeDocument(prevDocHash)
+                if (response.isSuccessful) {
+                    _infuraDocDeleted.postValue(true)
+                }
+            } catch (e: Exception) {
+                Timber.e(e.message)
             }
         }
     }

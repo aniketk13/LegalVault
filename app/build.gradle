@@ -46,6 +46,8 @@ android {
 //        properties.load(project.rootProject.file("local.properties").newDataInputStream())
         buildConfigField("String", "DROPBOX_SIGN_API_KEY", "\"" + localProperties['DROPBOX_SIGN_API_KEY'] + "\"")
         buildConfigField("String", "GPT_API_KEY", "\"" + localProperties['GPT_API_KEY'] + "\"")
+        buildConfigField("String", "Infura_API_KEY", "\"" + localProperties['Infura_API_KEY'] + "\"")
+        buildConfigField("String", "GitHub_API_KEY", "\"" + localProperties['GitHub_API_KEY'] + "\"")
 //        buildConfigField "String", "API_KEY", "\"${properties.getProperty("GPT_API_KEY")}\""
     }
 
