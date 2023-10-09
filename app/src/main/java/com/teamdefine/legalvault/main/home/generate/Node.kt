@@ -7,7 +7,8 @@ class Node(
     text: String,
     date: String,
     documentName: String,
-    signersName: String
+    signersName: String,
+    is_signed: Boolean
 ) {
     var value: String? = null
         private set
@@ -21,8 +22,10 @@ class Node(
         private set
     var signers: String? = null
         private set
+    var is_signed: Boolean? = false
+        private set
 
-    constructor() : this("", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", false)
 
     init {
         this.value = value
@@ -31,6 +34,7 @@ class Node(
         this.date = date
         this.text = text
         this.documentName = documentName
+        this.is_signed = is_signed
     }
 }
 

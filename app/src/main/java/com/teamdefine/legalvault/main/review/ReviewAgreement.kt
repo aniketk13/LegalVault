@@ -94,9 +94,9 @@ class ReviewAgreement : Fragment() {
                 val update = hashMapOf<String, Any>("hash" to "null")
                 firestoreInstance.collection("linkedLists").document(args.prevSignatureId!!)
                     .update(update).addOnCompleteListener {
-                    Timber.i("Hash removed from firestore")
-                    findNavController().popBackStack()
-                }
+                        Timber.i("Hash removed from firestore")
+                        findNavController().popBackStack()
+                    }
             }
         })
 
@@ -140,7 +140,8 @@ class ReviewAgreement : Fragment() {
                 binding.documentEditText.text.toString(),
                 Utility.convertTimestampToDateInIST(it.signature_request.created_at),
                 args.documentName,
-                signersName
+                signersName,
+                false
             )
             uploadNodeToFirestore(node)
         })

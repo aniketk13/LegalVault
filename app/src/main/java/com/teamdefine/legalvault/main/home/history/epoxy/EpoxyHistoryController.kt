@@ -20,6 +20,8 @@ class EpoxyHistoryController() :
             first.documentName?.let { agreementTitle(it) }
             first.signers?.replace(",", "-")?.let { agreementBetween(it) }
             first.date?.let { date(it) }
+            tamperProof(first.is_signed == true)
+
         }
         second.forEach {
             epoxyModelOld {

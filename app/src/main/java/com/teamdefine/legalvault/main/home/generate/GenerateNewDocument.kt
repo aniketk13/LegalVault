@@ -83,6 +83,9 @@ class GenerateNewDocument : Fragment() {
 //                generateAgreement(Utility.appendCustomDocGenerationPropmt(binding.promptTextInput.text.toString()))
             }
         }
+        binding.mic.setOnClickListener {
+            binding.root.showSnackBar("Coming soon")
+        }
     }
 
     private fun initObservers() {
