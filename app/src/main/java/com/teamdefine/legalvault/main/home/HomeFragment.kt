@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdefine.legalvault.databinding.FragmentHomeBinding
 import com.teamdefine.legalvault.main.home.adapter.HomePageViewPagerAdapter
 import com.teamdefine.legalvault.main.home.generate.GenerateNewDocumentVM
+import com.teamdefine.legalvault.main.utility.extensions.showSnackBar
 
 class HomeFragment : Fragment() {
     private val viewModel: GenerateNewDocumentVM by viewModels()
@@ -36,8 +37,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initClickListeners()
         initViews()
         initBackPressListener()
+    }
+
+    private fun initClickListeners() {
+        binding.apply {
+            notification.setOnClickListener {
+                binding.root.showSnackBar("Coming soon")
+            }
+        }
     }
 
     private fun initViews() {

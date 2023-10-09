@@ -70,6 +70,7 @@
                     android:id="@+id/promptLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"
                     android:paddingHorizontal="20dp"
                     app:layout_constraintBottom_toTopOf="@id/prepareDocBtn"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +84,16 @@
                         android:layout_height="match_parent"
                         android:hint="Briefly describe your document" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/mic"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_mic"
+                    app:layout_constraintBottom_toBottomOf="@id/promptLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/promptLayout" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/prepareDocBtn"
