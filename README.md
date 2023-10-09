@@ -41,11 +41,12 @@ Track every change made to your documents with our comprehensive modification hi
 - 👁️ Preview with Biometric Authentication: Unlock the ability to preview signed documents securely. Biometric authentication grants exclusive access to review the document's contents, ensuring sensitive information remains confidential.
 
 - 📃 Document Summarization: Condense the essence of your document with ease. On biometric authentication, access the summarization feature to distill complex legal documents into concise, digestible insights.
+- 
 ![image](https://github.com/aniketk13/LegalVault/assets/73310532/c1167b74-b156-401c-ab16-375fb3014df5)
 
 ## 🛠 How we built it
 
-- Hello Sign, Kotlin (MVVM, NavGraphs, Coroutines, Retrofit, Koin, Clean Architecture), XML, Postman, Firebase (Authentication, Firestore, Storage, Crashlytics, Analytics), APIs, Figma.
+- Dropbox Sign, Kotlin (MVVM, NavGraphs, Coroutines, Retrofit, Koin, Clean Architecture), XML, Postman, Firebase (Authentication, Firestore, Storage, Crashlytics, Analytics), APIs, Figma.
 
 ## ❗Challenges we ran into:
 
