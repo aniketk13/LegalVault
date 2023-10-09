@@ -88,6 +88,18 @@ class ReviewAgreement : Fragment() {
     }
 
     private fun initObservers() {
+
+        viewModel.infuraDocDeleted.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val update = hashMapOf<String, Any>("hash" to "null")
+                firestoreInstance.collection("linkedLists").document(args.prevSignatureId!!)
+                    .update(update).addOnCompleteListener {
+                    Timber.i("Hash removed from firestore")
+                    findNavController().popBackStack()
+                }
+            }
+        })
+
         viewModel.localFilePath.observe(viewLifecycleOwner, Observer { filePath ->
             Timber.e(filePath.toString())
             filePath?.let {
@@ -161,7 +173,15 @@ class ReviewAgreement : Fragment() {
         val update = hashMapOf<String, Any>("status" to "Old")
         firestoreInstance.collection("linkedLists").document(prevSignatureId).update(update)
             .addOnCompleteListener {
-                findNavController().popBackStack()
+                removeHashFireStore(prevSignatureId)
+            }
+    }
+
+    private fun removeHashFireStore(prevSignatureId: String) {
+        firestoreInstance.collection("linkedLists").document(prevSignatureId).get()
+            .addOnCompleteListener {
+                val hash = it.result.getString("hash")
+                viewModel.removeDocumentFromInfura(hash!!)
             }
     }
 

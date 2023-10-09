@@ -1,5 +1,6 @@
 package com.teamdefine.legalvault.api
 
+import com.teamdefine.legalvault.BuildConfig
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubRequestModel
 import com.teamdefine.legalvault.main.home.bottomsheet.model.GitHubUpdateFileStatusResponseModel
 import retrofit2.Response
@@ -13,7 +14,7 @@ interface GitHubAPI {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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"
+        "Authorization: Bearer ${BuildConfig.GitHub_API_KEY}"
     )
     @POST("repos/aniketk13/testing/actions/workflows/deploy.yaml/dispatches")
     suspend fun updateFile(@Body body: GitHubRequestModel): Response<Any>

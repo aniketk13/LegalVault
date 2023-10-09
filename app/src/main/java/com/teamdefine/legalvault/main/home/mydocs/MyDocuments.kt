@@ -96,13 +96,13 @@ class MyDocuments : Fragment() {
                 if (request.is_complete) {
                     firebaseFirestore.collection("linkedLists")
                         .document(request.signature_request_id).get().addOnCompleteListener {
-                        if (it.result.exists()) {
-                            val hash = it.result.getString("hash")
-                            if (hash.equals("null")) {
-                                viewmodel.getFile(request.signature_request_id)
+                            if (it.result.exists()) {
+                                val hash = it.result.getString("hash")
+                                if (hash.equals("null")) {
+                                    viewmodel.getFile(request.signature_request_id)
+                                }
                             }
                         }
-                    }
                 }
             }
         }

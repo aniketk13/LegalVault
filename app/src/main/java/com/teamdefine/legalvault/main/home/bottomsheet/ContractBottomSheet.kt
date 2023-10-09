@@ -181,7 +181,6 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private fun modifyContract() {
         bottomSheetVM.updateLoadingModel(LoadingModel.LOADING)
         var documentText: String? = ""
-        Timber.i("Success with Modifying Contract")
         firebaseFirestore.collection("linkedLists").document(signature.signature_request_id).get()
             .addOnCompleteListener {
                 bottomSheetVM.updateLoadingModel(LoadingModel.COMPLETED)
