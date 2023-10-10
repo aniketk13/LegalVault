@@ -3,6 +3,7 @@ package com.teamdefine.legalvault.main.home.generate
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import com.teamdefine.legalvault.R
 import com.teamdefine.legalvault.databinding.FragmentGenerateNewDocumentBinding
 import com.teamdefine.legalvault.main.base.LoadingModel
@@ -39,6 +42,30 @@ class GenerateNewDocument : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initClickListeners()
         initObservers()
+//// Create a message payload
+//        val messagePayload = mapOf(
+//            "notification" to mapOf(
+//                "title" to "Notification Title",
+//                "body" to "Notification Body"
+//            ),
+//            "to" to "/topics/allDevices" // Send to a topic to target all devices
+//        )
+
+// Send the message
+//        val firebaseMessaging = FirebaseMessaging.getInstance()
+//        firebaseMessaging.send(RemoteMessage(Bundle().apply {
+//            putString("TEST", "test")
+//        }))
+        val remoteMessage = RemoteMessage.Builder("allDevices") // Use the topic as 'to'
+            .setMessageId(java.lang.Integer.toString(1))
+            .setData(mapOf(
+                "title" to "Notification Title",
+                "body" to "Notification Body"
+            ))
+            .build()
+
+        FirebaseMessaging.getInstance().send(remoteMessage)
+
     }
 
 

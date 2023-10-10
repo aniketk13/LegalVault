@@ -109,6 +109,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/summarizeDoc" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/notifySigner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_notification"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/metropolis_medium"
+            android:padding="15dp"
+            android:paddingStart="20dp"
+            android:text="Notify Signer"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/previewDoc" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
