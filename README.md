@@ -20,7 +20,7 @@ Step into the future of Legal Arguments with Legal Vault – the ultimate one-st
 
 - 📅 Comprehensive Modification History: Gain unparalleled insights into document evolution. Explore the detailed history of modifications, complete with timestamps and user attributions, enabling you to track every transformation.
 
-- 👁️ Preview with Biometric Authentication: Unlock the ability to preview signed documents securely. Biometric authentication grants exclusive access to review the document's contents, ensuring sensitive information remains confidential.
+- 👁️ Preview with Biometric Authentication: Unlock the ability to download signed documents securely. Biometric authentication grants exclusive access to review the document's contents, ensuring sensitive information remains confidential.
 
 - 📃 Document Summarization: Condense the essence of your document with ease. On biometric authentication, access the summarization feature to distill complex legal documents into concise, digestible insights.
   
@@ -49,4 +49,5 @@ Step into the future of Legal Arguments with Legal Vault – the ultimate one-st
 - Able to add propts using Audio.
 - Getting notifications if the documents are not signed yet.
 - Usage of NFC for signing contracts.
+- Connecting with a lawyer for assistance.
    
