@@ -117,7 +117,7 @@ class ReviewAgreement : Fragment() {
                 EmbeddedSignRequestModel(
                     clientId = CONSTANTS.CLIENT_ID,
                     documentTitle = args.documentName,
-                    documentSubject = "${args.documentName}-Subject",
+                    documentSubject = args.documentName,
                     documentMessage = "${args.documentName}-Message",
                     documentSigners = listOfSigner,
                     arrayListOf(publicURL)
