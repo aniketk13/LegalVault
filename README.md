@@ -24,7 +24,7 @@ With the utilization of **AI**, **Biometrics**, **Smart Contracts**, and **Decen
 
 - 📃 Document Summarization: Condense the essence of your document with ease. On biometric authentication, access the summarization feature to distill complex legal documents into concise, digestible insights.
   
-![image](https://github.com/aniketk13/LegalVault/assets/73310532/c1167b74-b156-401c-ab16-375fb3014df5)
+![image](https://github.com/aniketk13/LegalVault/assets/73310532/c1a2da4a-285d-4b80-8214-7994595feb35)
 
 ## 🛠 How we built it
 
