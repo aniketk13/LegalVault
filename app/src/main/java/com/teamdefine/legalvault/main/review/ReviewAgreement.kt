@@ -182,9 +182,9 @@ class ReviewAgreement : Fragment() {
         firestoreInstance.collection("linkedLists").document(prevSignatureId).get()
             .addOnCompleteListener {
                 val hash = it.result.getString("hash")
-                if(hash.isNullOrEmpty()){
+                if (hash.isNullOrEmpty()) {
                     findNavController().popBackStack()
-                }else{
+                } else {
                     viewModel.removeDocumentFromInfura(hash)
                 }
             }

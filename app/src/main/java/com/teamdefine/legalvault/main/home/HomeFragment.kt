@@ -47,6 +47,9 @@ class HomeFragment : Fragment() {
             notification.setOnClickListener {
                 binding.root.showSnackBar("Coming soon")
             }
+            assistance.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLegalAssistance())
+            }
         }
     }
 

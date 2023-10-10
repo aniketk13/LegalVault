@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_homeFragment_to_summaryFragment"
             app:destination="@id/summaryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_legalAssistance"
+            app:destination="@id/legalAssistance" />
     </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
@@ -91,4 +94,9 @@
             android:name="summarizedText"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/legalAssistance"
+        android:name="com.teamdefine.legalvault.main.legalassistance.LegalAssistance"
+        android:label="fragment_legal_assistance"
+        tools:layout="@layout/fragment_legal_assistance" />
 </navigation>

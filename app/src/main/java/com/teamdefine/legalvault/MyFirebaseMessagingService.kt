@@ -16,7 +16,8 @@ class MyFirebaseMessagingService(private val context: Context) : FirebaseMessagi
         val notificationTitle = remoteMessage.data["title"]
         val notificationBody = remoteMessage.data["body"]
         Timber.i("hello there")
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationChannelId = "your_channel_id" // Set your own channel ID
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

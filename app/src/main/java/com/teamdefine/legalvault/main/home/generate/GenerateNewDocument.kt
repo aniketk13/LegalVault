@@ -3,7 +3,6 @@ package com.teamdefine.legalvault.main.home.generate
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,10 +57,12 @@ class GenerateNewDocument : Fragment() {
 //        }))
         val remoteMessage = RemoteMessage.Builder("allDevices") // Use the topic as 'to'
             .setMessageId(java.lang.Integer.toString(1))
-            .setData(mapOf(
-                "title" to "Notification Title",
-                "body" to "Notification Body"
-            ))
+            .setData(
+                mapOf(
+                    "title" to "Notification Title",
+                    "body" to "Notification Body"
+                )
+            )
             .build()
 
         FirebaseMessaging.getInstance().send(remoteMessage)

@@ -72,5 +72,9 @@
         <item name="tabIndicatorHeight">@dimen/spacing_minimum_4dp</item>
     </style>
 
+    <style name="Circular">
+        <item name="cornerSize">50%</item>
+    </style>
+
 
 </resources>
