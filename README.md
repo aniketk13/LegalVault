@@ -22,6 +22,11 @@ Access your signed documents with ease, all while maintaining the highest level 
 
 - 📜 Modification History:
 Dive into the evolution of your agreements. Legal Vault keeps a detailed archive of changes, letting you trace the path from the beginning to the present, ensuring transparency and accountability.
+
+- 🔍 Agreements Summarization:
+  Streamline comprehension with our agreement summarization, making complex documents crystal clear at a glance in simple key points.
+
+  
 ## 💬 What it does:
 
 - 📊 Streamlined Document Generation: Upon launching the app, users harness the power of AI to effortlessly craft legally sound documents. Define your prompt in concise phrases, and watch as the application generates intricate legal documents with unparalleled precision.
@@ -30,11 +35,11 @@ Dive into the evolution of your agreements. Legal Vault keeps a detailed archive
 
 - 📑 Centralized Document Management: Keep your finger on the pulse of your documents with the 'My Docs' screen, which provides an overview of all documents queued for signatures, ensuring a bird's-eye view of your workflow.
 
-- 🔏 Biometric Document Signatures: With a simple click, enter the realm of document authentication. Utilize biometric authentication powered by Dropbox Sign to endorse documents securely. Your signature, unique and irreplaceable, solidifies the document's authenticity.
+- 🔏 Biometric Document Signatures: With a simple click, enter the realm of document authentication. Utilize biometric authentication combined with Dropbox Sign to endorse documents securely. Your signature, unique and irreplaceable, solidifies the document's authenticity.
 
 - 🌐 Secure Decentralized Storage: Upon receiving endorsements from all signatories, the document takes its permanent place in a highly secure decentralized storage. Wrapped in an impenetrable tamper seal, the document's integrity remains unscathed.
 
-- 🔀 Modification with Signer Agreement: Navigate the delicate terrain of document modification with the unanimous consent of all signatories. However, bear in mind that any alterations trigger the voiding of the tamper seal, obfuscating the hash/path of the decentralized storage. The document generation process must then commence anew.
+- 🔀 Modification with Signer Agreement: Navigate the delicate terrain of document modification with the unanimous consent of all signatories. However, bear in mind that any alterations trigger the voiding of the tamper seal, obfuscating the hash/path of the agreement in its decentralized storage. The document generation process must then commence anew.
 
 - 📅 Comprehensive Modification History: Gain unparalleled insights into document evolution. Explore the detailed history of modifications, complete with timestamps and user attributions, enabling you to track every transformation.
 
