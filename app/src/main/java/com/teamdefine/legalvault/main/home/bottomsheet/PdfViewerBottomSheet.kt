@@ -47,14 +47,14 @@ class PdfViewerBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun initObserser() {
-        pdfViewerBottomSheet.loadingModel.observe(viewLifecycleOwner, Observer {
-            binding.root.setVisibilityBasedOnLoadingModel(it)
-        })
-        pdfViewerBottomSheet.docHash.observe(viewLifecycleOwner, EventObserver {
-            it?.let { hash ->
-                setDataInWebView(hash)
-            }
-        })
+//        pdfViewerBottomSheet.loadingModel.observe(viewLifecycleOwner, Observer {
+//            binding.root.setVisibilityBasedOnLoadingModel(it)
+//        })
+//        pdfViewerBottomSheet.docHash.observe(viewLifecycleOwner, EventObserver {
+//            it?.let { hash ->
+//                setDataInWebView(hash)
+//            }
+//        })
     }
 
     private fun setDataInWebView(hashValue: String) {

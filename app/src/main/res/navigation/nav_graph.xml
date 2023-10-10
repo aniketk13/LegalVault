@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_homeFragment_to_legalAssistance"
             app:destination="@id/legalAssistance" />
+        <action
+            android:id="@+id/action_homeFragment_to_previewFragment"
+            app:destination="@id/previewFragment" />
     </fragment>
     <fragment
         android:id="@+id/reviewAgreement"
@@ -99,4 +102,12 @@
         android:name="com.teamdefine.legalvault.main.legalassistance.LegalAssistance"
         android:label="fragment_legal_assistance"
         tools:layout="@layout/fragment_legal_assistance" />
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.teamdefine.legalvault.main.home.PreviewFragment"
+        android:label="PreviewFragment" >
+        <argument
+            android:name="signId"
+            app:argType="string" />
+    </fragment>
 </navigation>

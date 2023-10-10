@@ -1,11 +1,14 @@
 package com.teamdefine.legalvault.main.home.bottomsheet
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -22,15 +25,18 @@ import com.teamdefine.legalvault.main.home.history.MyArgs
 import com.teamdefine.legalvault.main.home.mydocs.MyDocumentsVM
 import com.teamdefine.legalvault.main.home.mydocs.models.SignatureRequest
 import com.teamdefine.legalvault.main.utility.BiometricUtil
+import com.teamdefine.legalvault.main.utility.event.EventObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import kotlin.math.sign
 
 class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     private val bottomSheetVM: MyDocumentsVM by activityViewModels()
+    private val viewmodel: PdfViewerVM by viewModels()
     private lateinit var binding: LayoutMenuBottomSheetBinding
     private lateinit var signature: SignatureRequest
     private lateinit var firebaseInstance: FirebaseAuth
@@ -67,6 +73,12 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
     }
 
     private fun initObserver() {
+        viewmodel.docHash.observe(viewLifecycleOwner, EventObserver {
+            it?.let { hash ->
+                openPdf(hash)
+            }
+        })
+
         bottomSheetVM.signingUrl.observe(viewLifecycleOwner, Observer {
             showBiometricLoginOption()
         })
@@ -87,6 +99,12 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTest())
             }
         })
+    }
+
+    private fun openPdf(hash: String) {
+        val browserIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://$hash.ipfs.dweb.link/"))
+        startActivity(browserIntent)
     }
 
     private fun initViews() {
@@ -113,20 +131,19 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             }
             summarizeDoc.setOnClickListener {
                 flag = 5
-                bottomSheetVM.getDocTextFromFirebase(signature.signature_request_id)
-                dismiss()
+                showBiometricLoginOption()
             }
             previewDoc.setOnClickListener {
                 flag = 6
-                showPdfViewerBottomSheet()
-                dismiss()
+                showBiometricLoginOption()
             }
         }
     }
 
     private fun showPdfViewerBottomSheet() {
-        PdfViewerBottomSheet.newInstance(signatureId = signature.signature_request_id)
-            .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
+        viewmodel.getDocHashFromFirebase(signature.signature_request_id)
+//        PdfViewerBottomSheet.newInstance(signatureId = signature.signature_request_id)
+//            .show(childFragmentManager, "CONTRACT_OPTIONS_BOTTOM_SHEET")
     }
 
     private fun showBiometricLoginOption() {
@@ -140,6 +157,12 @@ class ContractBottomSheet : BottomSheetDialogFragment(), BiometricAuthListener {
             2 -> signContract()
             3 -> modifyContract()
             4 -> modificationHistory()
+            5 -> {
+                bottomSheetVM.getDocTextFromFirebase(signature.signature_request_id)
+                dismiss()
+            }
+
+            6 -> showPdfViewerBottomSheet()
             else -> Timber.i("Error/Select an Option")
         }
     }

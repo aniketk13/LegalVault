@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            tools:itemCount="5"
             android:layout_alignParentTop="true"
             tools:listitem="@layout/item_sign_requests" />
 
@@ -35,6 +36,7 @@
         android:id="@+id/noSignLayout"
         layout="@layout/layout_no_sign_requests"
         android:layout_width="match_parent"
+        android:layout_marginBottom="30dp"
         android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
