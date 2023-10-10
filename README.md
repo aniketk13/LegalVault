@@ -1,8 +1,8 @@
 ## 🥁Introduction:
 
-Unveiling Legal Vault: Your Gateway to Smart, Secure & Decentralized Agreements Management. 
+Unveiling Legal Vault: Your Gateway to **Smart**, **Secure** & **Decentralized** Agreements Management. 
 
-Step into the future of Legal Arguments with Legal Vault – the ultimate one-stop solution that can write the rules of contract handling! Legal Vault combines the power of cutting-edge AI, the convenience of Dropbox Sign, and the unbreakable security of decentralized IPFS storage to bring you a next-level experience.
+With the utilization of **AI**, **Biometrics**, **Smart Contracts**, and **Decentralized Storage** we've now stepped into the future of Legal Arguments with Legal Vault – the ultimate one-stop solution that can write the rules of contract handling! Legal Vault combines the power of cutting-edge AI, the convenience of Dropbox Sign, and the unbreakable security of decentralized IPFS storage to bring you a next-level experience.
   
 ## 💬 What it does:
 
