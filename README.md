@@ -23,7 +23,7 @@ Step into the future of Legal Arguments with Legal Vault – the ultimate one-st
 - 👁️ Preview with Biometric Authentication: Unlock the ability to preview signed documents securely. Biometric authentication grants exclusive access to review the document's contents, ensuring sensitive information remains confidential.
 
 - 📃 Document Summarization: Condense the essence of your document with ease. On biometric authentication, access the summarization feature to distill complex legal documents into concise, digestible insights.
-- 
+  
 ![image](https://github.com/aniketk13/LegalVault/assets/73310532/c1167b74-b156-401c-ab16-375fb3014df5)
 
 ## 🛠 How we built it
