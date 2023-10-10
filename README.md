@@ -2,30 +2,7 @@
 
 Unveiling Legal Vault: Your Gateway to Smart, Secure & Decentralized Agreements Management. 
 
-Step into the future of Legal Arguments with Legal Vault – the ultimate one-stop solution that's rewriting the rules of contract handling! Legal Vault combines the power of cutting-edge AI, the convenience of Dropbox Sign, and the unbreakable security of decentralized IPFS storage to bring you a next-level experience.
-
-- 🤖 AI-Powered Document Generation:
-No more tedious drafting or endless revisions. Legal Vault's AI understands your needs, delivering flawless agreements every time with just a simple prompt, making the process faster and more accurate than ever.
-- 🖋️ Biometric Signatures:
- Your signatures, your way. Say No to Printing, Scanning & Signing. Legal Vault enables seamless, paperless signing with just a Biometric Authentication, making digital signing like never before.
-
-- 🔏 Tamper-Resistant Documents:
-Rest easy knowing your signed documents are protected by an unbreakable tamper seal. Any unauthorized modifications will render the document void, providing unparalleled data integrity.
-
-- 🌐 Decentralized Storage:
-Say goodbye to centralized servers and hello to blockchain-powered decentralization. Your agreements are Fort Knox Secure, stored on a P2P distributed network, immune to data breaches and unauthorized access.
-
-- 📢 Real-Time Notifications: Stay informed every step of the way. Legal Vault sends instant notifications to all signers whenever an Agreement’s modification is detected, ensuring the previous versions turn void. No room for shadiness. 
-
-- 🔒 Biometric Authentication:
-Access your signed documents with ease, all while maintaining the highest level of security. Biometric authentication ensures that only authorized individuals can view and modify documents.
-
-- 📜 Modification History:
-Dive into the evolution of your agreements. Legal Vault keeps a detailed archive of changes, letting you trace the path from the beginning to the present, ensuring transparency and accountability.
-
-- 🔍 Agreements Summarization:
-  Streamline comprehension with our agreement summarization, making complex documents crystal clear at a glance in simple key points.
-
+Step into the future of Legal Arguments with Legal Vault – the ultimate one-stop solution that can write the rules of contract handling! Legal Vault combines the power of cutting-edge AI, the convenience of Dropbox Sign, and the unbreakable security of decentralized IPFS storage to bring you a next-level experience.
   
 ## 💬 What it does:
 
@@ -33,11 +10,11 @@ Dive into the evolution of your agreements. Legal Vault keeps a detailed archive
 
 - 🖋️ Document Review and Modification: Dive into the generated document, meticulously reviewing and refining it to align with your specific needs. Customize the content, seamlessly integrate signer details, and prepare the document for the next stage: authentication.
 
+- 🔏 Biometric Document Signatures: With a simple click, enter the realm of document authentication. Utilize biometric authentication combined with Dropbox Sign to sign documents securely. Your signature, unique and irreplaceable, solidifies the document's authenticity.
+
 - 📑 Centralized Document Management: Keep your finger on the pulse of your documents with the 'My Docs' screen, which provides an overview of all documents queued for signatures, ensuring a bird's-eye view of your workflow.
 
-- 🔏 Biometric Document Signatures: With a simple click, enter the realm of document authentication. Utilize biometric authentication combined with Dropbox Sign to endorse documents securely. Your signature, unique and irreplaceable, solidifies the document's authenticity.
-
-- 🌐 Secure Decentralized Storage: Upon receiving endorsements from all signatories, the document takes its permanent place in a highly secure decentralized storage. Wrapped in an impenetrable tamper seal, the document's integrity remains unscathed.
+- 🌐 Secure Decentralized Storage: Upon receiving signatures from all signatories, the document takes its permanent place in a highly secure decentralized storage. Wrapped in an impenetrable tamper seal, the document's integrity remains unscathed.
 
 - 🔀 Modification with Signer Agreement: Navigate the delicate terrain of document modification with the unanimous consent of all signatories. However, bear in mind that any alterations trigger the voiding of the tamper seal, obfuscating the hash/path of the agreement in its decentralized storage. The document generation process must then commence anew.
 
