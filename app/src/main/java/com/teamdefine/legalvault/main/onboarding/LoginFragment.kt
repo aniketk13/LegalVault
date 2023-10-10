@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -159,6 +160,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun navigateToHomeScreen() {
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
         viewModel.updateLoadingModel(LoadingModel.COMPLETED)
     }
 }
